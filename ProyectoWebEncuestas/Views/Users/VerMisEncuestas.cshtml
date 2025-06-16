@@ -1,0 +1,120 @@
+﻿@{
+    Layout = "_Layout";
+}
+<main>
+    <div class="container">
+
+        <!-- Filtro por fecha -->
+        <section class="filter-section">
+            <label for="fechaFiltro" class="filter-label">Filtrar por fecha:</label>
+            <input type="date" id="fechaFiltro" />
+            <button id="quitarFiltro" class="btn-clear-filter">Limpiar filtro</button>
+        </section>
+
+        <div class="card-surv" id="encuestasContainer">
+
+        </div>
+
+        <a href="/Users/AgregarEncuesta" class="add-button" title="Agregar nueva encuesta">+</a>
+
+
+    </div>
+
+</main>
+
+<script>
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("idUsuario");
+
+    async function cargarMisEncuestas() {
+
+        try {
+            const response = await fetch(`https://encuesta-api.websitos256.com/api/encuestas/usuario/${userId}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("No se pudieron cargar tus encuestas");
+            }
+
+            const encuestas = await response.json();
+
+            const container = document.getElementById("encuestasContainer");
+            container.innerHTML = "";
+
+            const listaEncuestas = Array.isArray(encuestas) ? encuestas : [encuestas];
+
+            listaEncuestas.forEach(encuesta => {
+                const card = document.createElement("div");
+                card.className = "card-surv";
+
+                  const fechaISO = new Date(encuesta.fechaCreacion).toISOString().split("T")[0]; // yyyy-mm-dd
+
+                card.innerHTML = `
+                      <a  href="/Users/DetalleEncuesta?id=${encuesta.id}" class="survey-card" data-fecha="${fechaISO}">
+                        <div class="survey-info2">
+                       <strong>${encuesta.titulo}</strong><br />
+                       <small>Creada el ${new Date(encuesta.fechaCreacion).toLocaleDateString()}</small>
+                        </div>
+                      </a>
+                      <div class="survey-actions">
+                         <a href="/Users/EditarEncuesta?id=${encuesta.id}" class="edit-btn" title="Editar encuesta">✏️</a>
+                         <a href="/Users/EliminarEncuesta?id=${encuesta.id}"  class="delete-btn" title="Eliminar encuesta">🗑️</a>
+                      </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+        } catch (error) {
+            console.error(error);
+            alert("Error al cargar tus encuestas.");
+        }
+    }
+
+    window.addEventListener("DOMContentLoaded", cargarMisEncuestas);
+
+    // Función para filtrar encuestas por fecha
+        const fechaInput = document.getElementById('fechaFiltro');
+    const btnQuitarFiltro = document.getElementById('quitarFiltro');
+
+     btnQuitarFiltro.style.display = 'none';
+
+
+    fechaInput.addEventListener('input', function () {
+        const filtro = this.value; // yyyy, yyyy-mm, yyyy-mm-dd
+        const encuestas = document.querySelectorAll('#encuestasContainer .survey-card');
+
+        if (filtro) {
+            btnQuitarFiltro.style.display = 'inline';
+        } else {
+            btnQuitarFiltro.style.display = 'none';
+        }
+
+        encuestas.forEach(encuesta => {
+            const fecha = encuesta.getAttribute('data-fecha');
+
+            if (!filtro || fecha.startsWith(filtro)) {
+                encuesta.style.display = 'block';
+            } else {
+                encuesta.style.display = 'none';
+            }
+        });
+    });
+
+    btnQuitarFiltro.addEventListener('click', function () {
+        fechaInput.value = "";
+        this.style.display = 'none';
+
+        // Mostrar todas las encuestas
+        const encuestas = document.querySelectorAll('#encuestasContainer .survey-card');
+        encuestas.forEach(encuesta => {
+            encuesta.style.display = 'block';
+        });
+    });
+
+
+</script>

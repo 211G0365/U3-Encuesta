@@ -1,0 +1,205 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<main class="container">
+    <form id="surveyForm">
+
+        <div class="rating-labels">
+            <span class="label-opcion uno">Muy malo (1)</span>
+            <span class="label-opcion dos">Malo (2)</span>
+            <span class="label-opcion tres">Regular (3)</span>
+            <span class="label-opcion cuatro">Bueno (4)</span>
+            <span class="label-opcion cinco">Excelente (5)</span>
+        </div>
+
+        <div class="questions-list" id="questionsContainer">
+            <div class="question-item">
+
+            </div>
+        </div>
+        <div class="form-buttons">
+            <button type="submit" class="submit-button">Finalizar encuesta</button>
+            <button type="button" class="cancel-button" onclick="cancelSurvey()">Cancelar</button>
+        </div>
+
+    </form>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    let connection;
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const encuestaId = new URLSearchParams(window.location.search).get("id");
+        const idRespuesta = localStorage.getItem("idRespuesta");
+        const token = localStorage.getItem("token");
+        const nombreAlumno = localStorage.getItem("nombreAlumno");
+
+        if (!encuestaId || !idRespuesta || !token || !nombreAlumno) {
+            alert("Datos de sesión incompletos.");
+            window.location.href = "/Users/Index";
+            return;
+        }
+
+        await conectarSignalR(nombreAlumno);
+        await cargarPreguntas(encuestaId, token);
+
+        document.getElementById("surveyForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await enviarRespuestas(idRespuesta, token);
+        });
+    });
+
+    async function cancelSurvey() {
+        const confirmar = confirm("¿Cancelar la encuesta?");
+        if (!confirmar) return;
+
+        const idRespuesta = localStorage.getItem("idRespuesta");
+        const token = localStorage.getItem("token");
+
+        if (!idRespuesta || isNaN(parseInt(idRespuesta)) || !token) {
+            alert("Error: ID de respuesta o token no válido.");
+            return;
+        }
+
+        try {
+            const res = await fetch(`https://localhost:7297/api/respuestas/cancelar/${idRespuesta}`, {
+                method: "DELETE",
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (!res.ok) {
+                const errorText = await res.text();
+                console.error("Respuesta del servidor:", errorText);
+                throw new Error(errorText || "Error desconocido al cancelar.");
+            }
+
+            localStorage.removeItem("idRespuesta");
+            localStorage.removeItem("nombreAlumno");
+
+            if (connection) await connection.stop();
+            window.location.href = "/Users/Index";
+        } catch (err) {
+            console.error(err);
+            alert("Error al cancelar la encuesta: " + err.message);
+        }
+    }
+
+    async function conectarSignalR(nombreAlumno) {
+        connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://encuesta-api.websitos256.com/hubs/estadisticas")
+            .withAutomaticReconnect()
+            .build();
+
+        connection.onclose(err => {
+            console.warn("Desconectado de SignalR", err);
+        });
+
+        try {
+            await connection.start();
+            console.log("Conectado al hub");
+
+            await connection.invoke("RegistrarAlumno", nombreAlumno);
+        } catch (err) {
+            console.error("Error al conectar con SignalR:", err);
+        }
+    }
+
+    async function cargarPreguntas(encuestaId, token) {
+        const container = document.getElementById("questionsContainer");
+        container.innerHTML = "";
+
+        try {
+            const res = await fetch(`https://encuesta-api.websitos256.com/api/encuestas/con-preguntas/${encuestaId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (!res.ok) throw new Error("Error al obtener preguntas");
+
+            const data = await res.json();
+            const preguntas = data.pregunta;
+
+            preguntas.forEach((pregunta, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question-item");
+
+                const label = document.createElement("label");
+                label.classList.add("question-text");
+                label.textContent = `${index + 1}. ${pregunta.descripcion}`;
+                questionDiv.appendChild(label);
+
+                const optionsDiv = document.createElement("div");
+                optionsDiv.classList.add("rating-options");
+
+                for (let i = 1; i <= 5; i++) {
+                    const optionLabel = document.createElement("label");
+                    const radio = document.createElement("input");
+
+                    radio.type = "radio";
+                    radio.name = `q${pregunta.id}`;
+                    radio.value = i;
+                    radio.required = true;
+
+                    const span = document.createElement("span");
+                    span.textContent = i;
+
+                    optionLabel.appendChild(radio);
+                    optionLabel.appendChild(span);
+                    optionsDiv.appendChild(optionLabel);
+                }
+
+                questionDiv.appendChild(optionsDiv);
+                container.appendChild(questionDiv);
+            });
+        } catch (err) {
+            console.error(err);
+            alert("No se pudieron cargar las preguntas.");
+        }
+    }
+
+    async function enviarRespuestas(idRespuesta, token) {
+        const respuestas = [];
+
+        document.querySelectorAll(".question-item").forEach(div => {
+            const idPregunta = div.querySelector("input[type='radio']").name.replace("q", "");
+            const valor = div.querySelector("input[type='radio']:checked")?.value;
+
+            if (!valor) return;
+
+            respuestas.push({
+                idRespuesta: parseInt(idRespuesta),
+                idPregunta: parseInt(idPregunta),
+                valorEvaluacion: parseInt(valor)
+            });
+        });
+
+        if (respuestas.length === 0) {
+            alert("Debe responder todas las preguntas.");
+            return;
+        }
+
+        try {
+            const res = await fetch("https://encuesta-api.websitos256.com/api/respuestas/responderPreguntas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(respuestas)
+            });
+
+            if (!res.ok) throw new Error("Error al guardar respuestas.");
+
+            alert("¡Gracias por responder!");
+            localStorage.removeItem("idRespuesta");
+            localStorage.removeItem("nombreAlumno");
+
+            if (connection) await connection.stop();
+            window.location.href = "/Users/Index";
+        } catch (err) {
+            console.error(err);
+            alert("Hubo un problema al enviar las respuestas: " + err.message);
+        }
+    }
+</script>

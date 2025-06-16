@@ -1,0 +1,99 @@
+﻿@{
+    Layout = "_Layout";
+} 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<div class="container">
+    <h2 class="survey-subtitle">Datos del Alumno:</h2>
+
+    <form class="student-form" id="form-alumno">
+        <div class="input-group">
+            <i class="fas fa-user icon"></i>
+            <input type="text" id="nombreAlumno" placeholder="Nombre del alumno" required />
+        </div>
+        <div class="input-group">
+            <i class="fas fa-id-card"></i>
+            <input type="text" id="numeroControl" placeholder="Número de control" required />
+        </div>
+        <div class="form-buttons">
+            <a id="btn-siguiente" href="#" class="next-button">
+                Siguiente</a>
+                <a href="/Users/Index" id="btn-cancelar" class="cancel-button">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      const encuestaId = new URLSearchParams(window.location.search).get("id");
+
+      const formAlumno = document.getElementById("form-alumno");
+      if (formAlumno) {
+        document.getElementById("btn-siguiente").addEventListener("click", async function (e) {
+          e.preventDefault(); // evitar comportamiento por defecto del enlace
+
+          const nombre = document.getElementById("nombreAlumno").value.trim();
+          const numeroControl = document.getElementById("numeroControl").value.trim();
+
+          if (!nombre || !numeroControl || !encuestaId) {
+            alert("Complete todos los campos.");
+            return;
+          }
+          ``
+          const token = localStorage.getItem("token");
+
+          try {
+            const response = await fetch('https://encuesta-api.websitos256.com/api/respuestas/registrarInicio', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+                 body: JSON.stringify({
+                  IdEncuesta: parseInt(encuestaId),
+                  NombreAlumno: nombre,
+                  NumControlAlumno: numeroControl
+                })
+
+            });
+
+               if (!response.ok) {
+              const errorMsg = await response.text();
+
+              if (errorMsg.includes("ya ha respondido")) {
+                alert("Este alumno ya ha respondido esta encuesta. Redirigiendo al inicio.");
+                localStorage.removeItem("idRespuesta");
+                window.location.href = "/Users/Index";
+              } else {
+                throw new Error(errorMsg || "Error al registrar datos del alumno");
+              }
+
+              return;
+            }
+            localStorage.removeItem("nombreAlumno");
+            localStorage.removeItem("idRespuesta");
+            const data = await response.json();
+
+            const idRespuesta = data.idRespuesta;
+
+            localStorage.setItem("idRespuesta", idRespuesta);
+            localStorage.setItem("nombreAlumno", nombre);
+            window.location.href = `/Users/ResponderPreguntas?id=${encuestaId}`;
+          } catch (error) {
+            alert(error.message);
+          }
+        });
+
+
+           document.getElementById("btn-cancelar").addEventListener("click", function (e) {
+        e.preventDefault();
+        localStorage.removeItem("idRespuesta");
+        localStorage.removeItem("nombreAlumno");
+        window.location.href = "/Users/Index";
+           });
+
+
+      }
+    });
+</script>

@@ -1,0 +1,117 @@
+﻿@{
+    Layout = "_Layout";
+}
+<main>
+    <div class="container">
+        <h2>Encuestas Existentes</h2>
+        <!-- Filtro por fecha -->
+        <section class="filter-section">
+            <label for="fechaFiltro" class="filter-label">Filtrar por fecha:</label>
+            <input type="date" id="fechaFiltro" />
+            <button id="quitarFiltro" class="btn-clear-filter">Limpiar filtro</button>
+        </section>
+
+        <div class="survey-list" id="encuestasContainer">
+
+
+		</div>
+ 
+		<a href="/Users/AgregarEncuesta" class="add-button" title="Agregar nueva encuesta">+</a>
+
+    </div>
+	
+</main>
+  
+
+      <script>
+    const token = localStorage.getItem("token");
+     if (!token) {
+          window.location.href = "/Login";
+      }
+
+    async function cargarEncuestas() {
+        try {
+            const response = await fetch("https://encuesta-api.websitos256.com/api/encuestas/encuestas", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("No se pudieron cargar las encuestas");
+            }
+
+            const encuestas = await response.json();
+            const container = document.getElementById("encuestasContainer");
+            container.innerHTML = "";
+
+            encuestas.forEach(encuesta => {
+                const card = document.createElement("div");
+                card.className = "card-surv";
+
+                 const fechaISO = new Date(encuesta.fechaCreacion).toISOString().split("T")[0]; // yyyy-mm-dd
+
+                card.innerHTML = `
+                    <a href="DetalleEncuesta?id=${encuesta.id}" class="survey-card" data-fecha="${fechaISO}">
+                        <div class="survey-info">
+                            <strong>${encuesta.titulo}</strong><br />
+                            <small>Creada el ${new Date(encuesta.fechaCreacion).toLocaleDateString()}</small>
+                        </div>
+                    </a>
+                `;
+
+                container.appendChild(card);
+            });
+        } catch (error) {
+            console.error(error);
+            alert("Error al cargar las encuestas. Revise su conexión a internet");
+
+        }
+    }
+
+    window.addEventListener("DOMContentLoaded", cargarEncuestas);
+
+    const fechaInput = document.getElementById('fechaFiltro');
+    const btnQuitarFiltro = document.getElementById('quitarFiltro');
+
+     btnQuitarFiltro.style.display = 'none';
+
+
+    fechaInput.addEventListener('input', function () {
+        const filtro = this.value; // yyyy, yyyy-mm, yyyy-mm-dd
+        const encuestas = document.querySelectorAll('#encuestasContainer .survey-card');
+
+        if (filtro) {
+            btnQuitarFiltro.style.display = 'inline';
+        } else {
+            btnQuitarFiltro.style.display = 'none';
+        }
+
+        encuestas.forEach(encuesta => {
+            const fecha = encuesta.getAttribute('data-fecha');
+
+            if (!filtro || fecha.startsWith(filtro)) {
+                encuesta.style.display = 'block';
+            } else {
+                encuesta.style.display = 'none';
+            }
+        });
+    });
+
+    btnQuitarFiltro.addEventListener('click', function () {
+        fechaInput.value = ""; 
+        this.style.display = 'none'; 
+
+        // Mostrar todas las encuestas
+        const encuestas = document.querySelectorAll('#encuestasContainer .survey-card');
+        encuestas.forEach(encuesta => {
+            encuesta.style.display = 'block';
+        });
+    });
+
+
+
+
+</script>
+
