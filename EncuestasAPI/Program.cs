@@ -105,11 +105,12 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
     policy =>
     {
-        policy
-            .WithOrigins("https://localhost:7058", "https://encuesta.websitos256.com", "https://encuesta-api.websitos256.com")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials();
+		policy
+			.WithOrigins("https://localhost:7058", "https://encuesta.websitos256.com", "https://encuesta-api.websitos256.com")
+			.AllowAnyMethod()
+			.AllowAnyHeader()
+			.AllowCredentials();
+			
     });
 });
 
@@ -121,9 +122,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseRouting();
 app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
-app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
