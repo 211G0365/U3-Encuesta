@@ -1,33 +1,25 @@
 ﻿@{
     Layout = "_Layout";
 }
-<main>
-    <div class="container">
-        <h2>Encuestas Existentes</h2>
-        <!-- Filtro por fecha -->
-        <section class="filter-section">
-            <label for="fechaFiltro" class="filter-label">Filtrar por fecha:</label>
-            <input type="date" id="fechaFiltro" />
-            <button id="quitarFiltro" class="btn-clear-filter">Limpiar filtro</button>
+<main class="encuestas-dashboard">
+    <div class="contenedor-encuestas">
+        <div class="encabezado-encuestas">
+            <h2>Encuestas</h2>
+            <button id="btnAgregarEncuesta" class="btn-agregar" aria-label="Agregar nueva encuesta">➕ Nueva Encuesta</button>
+        </div>
+        <section class="grid-encuestas" id="encuestasContainer">
+            <p>Cargando encuestas...</p>
         </section>
-
-        <div class="survey-list" id="encuestasContainer">
-
-
-		</div>
- 
-		<a href="/Users/AgregarEncuesta" class="add-button" title="Agregar nueva encuesta">+</a>
-
     </div>
 	
 </main>
   
 
-      <script>
+<script>
     const token = localStorage.getItem("token");
-     if (!token) {
-          window.location.href = "/Login";
-      }
+    if (!token) {
+        window.location.href = "/Login";
+    }
 
     async function cargarEncuestas() {
         try {
@@ -48,70 +40,31 @@
 
             encuestas.forEach(encuesta => {
                 const card = document.createElement("div");
-                card.className = "card-surv";
-
-                 const fechaISO = new Date(encuesta.fechaCreacion).toISOString().split("T")[0]; // yyyy-mm-dd
-
+                card.className = "encuesta-card";
+                card.style.cursor = "pointer"; 
                 card.innerHTML = `
-                    <a href="DetalleEncuesta?id=${encuesta.id}" class="survey-card" data-fecha="${fechaISO}">
-                        <div class="survey-info">
-                            <strong>${encuesta.titulo}</strong><br />
-                            <small>Creada el ${new Date(encuesta.fechaCreacion).toLocaleDateString()}</small>
-                        </div>
-                    </a>
+                   <div>
+                    <h3>${encuesta.titulo}</h3>
+                </div>
+
                 `;
+                card.addEventListener("click", function () {
+                    window.location.href = `DetalleEncuesta?id=${encuesta.id}`;
+                });
 
                 container.appendChild(card);
             });
         } catch (error) {
             console.error(error);
             alert("Error al cargar las encuestas. Revise su conexión a internet");
-
         }
     }
 
     window.addEventListener("DOMContentLoaded", cargarEncuestas);
 
-    const fechaInput = document.getElementById('fechaFiltro');
-    const btnQuitarFiltro = document.getElementById('quitarFiltro');
-
-     btnQuitarFiltro.style.display = 'none';
-
-
-    fechaInput.addEventListener('input', function () {
-        const filtro = this.value; // yyyy, yyyy-mm, yyyy-mm-dd
-        const encuestas = document.querySelectorAll('#encuestasContainer .survey-card');
-
-        if (filtro) {
-            btnQuitarFiltro.style.display = 'inline';
-        } else {
-            btnQuitarFiltro.style.display = 'none';
-        }
-
-        encuestas.forEach(encuesta => {
-            const fecha = encuesta.getAttribute('data-fecha');
-
-            if (!filtro || fecha.startsWith(filtro)) {
-                encuesta.style.display = 'block';
-            } else {
-                encuesta.style.display = 'none';
-            }
-        });
+    document.getElementById("btnAgregarEncuesta").addEventListener("click", function () {
+        window.location.href = "AgregarEncuesta";
     });
-
-    btnQuitarFiltro.addEventListener('click', function () {
-        fechaInput.value = ""; 
-        this.style.display = 'none'; 
-
-        // Mostrar todas las encuestas
-        const encuestas = document.querySelectorAll('#encuestasContainer .survey-card');
-        encuestas.forEach(encuesta => {
-            encuesta.style.display = 'block';
-        });
-    });
-
-
-
 
 </script>
 

@@ -4,10 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
-    <link rel="stylesheet" href="~/assets/styles.css" />
+    <link rel="stylesheet" href="~/assets/StylesAdmin.css" />
 </head>
 <body>
-    <!-- Barra superior con título y botón de menú -->
     <header class="header-bar">
         <h1 class="page-title">Encuestas</h1>
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
@@ -16,15 +15,15 @@
     <div class="menu-modal" id="menuModal">
         <div class="menu-content">
             <div class="menu-header">
-                <div class="user-icon">👤</div>
                 <span class="user-name" id="userName">Usuario</span>
-                <span class="close-menu" onclick="toggleMenu()">×</span>
+                <span class="close-menu" onclick="toggleMenu()">☰</span>
             </div>
             <div class="menu-links">
-                <a href="/Users/Index">Inicio</a>
+                <a href="/Users/Index">Otras Encuestas</a>
                 <a href="#" onclick="goToMisEncuestas()">Mis Encuestas</a>
+                <a href="/Home/Login" class="logout-link">Cerrar sesión</a>
+
             </div>
-            <a href="/Home/Login" class="logout-link">Cerrar sesión</a>
         </div>
     </div>
     @RenderBody()

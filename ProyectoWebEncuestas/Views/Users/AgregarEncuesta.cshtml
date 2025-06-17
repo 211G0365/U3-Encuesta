@@ -2,43 +2,29 @@
     Layout = "_Layout";
 }
 
-<main class="container">
-    <form id="addSurveyForm">
-        <div class="form-group">
-            <label for="surveyName" style="font-weight: bold;">Nombre de la encuesta:</label>
-            <input class="aggencuesta" type="text" id="surveyName" name="surveyName" required />
-        </div>
+<main class="crear-encuesta-wrapper">
+    <h1 class="crear-encuesta-titulo">Crear Nueva Encuesta</h1>
 
-        <div id="questionsContainer">
-            <div class="form-group question-item">
-                <div class="question-input-wrapper">
-                    <div class="text-input-group">
-                        <label for="question1">Pregunta:</label>
-                        <input type="text" id="question1" name="questions[]" required />
-                    </div>
-                    <div class="number-input-group">
-                        <label for="questionNumber1">Número:</label>
-                        <input type="text" id="questionNumber1" name="questionNumbers[]" value="1" />
-                    </div>
-                </div>
+    <form id="addSurveyForm" class="crear-encuesta-formulario">
+        <label for="surveyName">Título de la encuesta</label>
+        <input type="text" id="surveyName" name="surveyName" placeholder="Ej. Evaluación de desempeño" required />
+
+        <div id="questionsContainer" class="contenedor-preguntas">
+            <div class="pregunta-item">
+                <input type="text" id="question1" name="questions[]" placeholder="Pregunta 1..." required />
             </div>
         </div>
 
-        <div class="button-group">
-            <button type="button" class="btn-add" onclick="addQuestion()">Agregar pregunta</button>
-        </div>
-
-        <div class="button-group">
-            <button type="submit" class="submit-button">Guardar</button>
-            <button type="button" class="cancel-button" onclick="cancelar()">Cancelar</button>
+        <div class="botones-opciones">
+            <button type="button" onclick="addQuestion()">➕ Agregar Pregunta</button>
+            <button type="submit" class="guardar">Guardar</button>
+            <button type="button" onclick="cancelar()" class="cancelar">Cancelar</button>
         </div>
     </form>
 </main>
 <script>
   const token = localStorage.getItem("token");
      let questionCount = 1;
-
-       // Función para agregar nuevas preguntas
       function addQuestion() {
         if (questionCount >= 10) {
           alert("Solo se permiten hasta 10 preguntas.");
@@ -51,77 +37,177 @@
         div.className = "form-group question-item";
 
            div.innerHTML = `
-        <div class="question-input-wrapper">
-          <div class="text-input-group">
-            <label for="question${questionCount}">Pregunta:</label>
-            <input type="text" id="question${questionCount}" name="questions[]" required />
-          </div>
-          <div class="number-input-group">
-            <label for="questionNumber${questionCount}">Número:</label>
-            <input type="text" id="questionNumber${questionCount}" name="questionNumbers[]" value="${questionCount}" required />
-          </div>
-        </div>
+             <div class="question-input-wrapper">
+              <div class="text-input-group">
+                <input type="text" id="question${questionCount}" name="questions[]" required placeholder="Escriba la siguiente pregunta" />
+              </div>
+            </div>
       `;
 
       container.appendChild(div);
     }
-    
-      function cancelar() {
-        if (confirm("¿Deseas cancelar esta encuesta?")) {
-          window.history.back();
-        }
-      }
 
-    document.getElementById("addSurveyForm").addEventListener("submit", function(event){
-          event.preventDefault();
+         function cancelar() {
+              window.history.back();
 
-          const titulo = document.getElementById("surveyName").value;
-          const questionsInputs = document.querySelectorAll('input[name="questions[]"]');
-          const numbersInputs = document.querySelectorAll('input[name="questionNumbers[]"]');
+          }
 
-          const preguntas = [];
+        document.getElementById("addSurveyForm").addEventListener("submit", function(event){
+              event.preventDefault();
 
-            for (let i = 0; i < questionsInputs.length; i++) {
-                 const descripcion = questionsInputs[i].value;
+              const titulo = document.getElementById("surveyName").value;
+              const questionsInputs = document.querySelectorAll('input[name="questions[]"]');
+              const numbersInputs = document.querySelectorAll('input[name="questionNumbers[]"]');
 
-                const numero = parseInt(numbersInputs[i].value);
+              const preguntas = [];
 
-                preguntas.push({
-                     Descripcion: descripcion,
-                     NumeroPregunta : numero
-                });
-            }
+                for (let i = 0; i < questionsInputs.length; i++) {
+                     const descripcion = questionsInputs[i].value;
+                     preguntas.push({
+                         Descripcion: descripcion,
+                         NumeroPregunta: i + 1
+                    });
+                }
 
-            const data= {
-                  Titulo: titulo,
-                  Preguntas: preguntas
-            };
+                const data= {
+                      Titulo: titulo,
+                      Preguntas: preguntas
+                };
 
-                fetch("https://encuesta-api.websitos256.com/api/encuestas/crear", {
-                    method: "POST",
-                    headers:{
-                          "Authorization": `Bearer ${token}`,
-                              "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-              }). 
-              then(response => {
-                      if (!response.ok) {
-                         return response.json().then(err => {throw err;
-                      });
+                  fetch("https://encuesta-api.websitos256.com/api/encuestas/crear", {
+                        method: "POST",
+                        headers:{
+                              "Authorization": `Bearer ${token}`,
+                                  "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                  }).
+                  then(response => {
+                          if (!response.ok) {
+                             return response.json().then(err => {throw err;
+                          });
 
-                  }
-                    return response.json();
-              })
-              .then(data => {
-                      console.log("Encuesta creada:", data);
-                      alert("Encuesta creada exitosamente");
-                      window.location.href = "/Users/Index";
-              })
-              .catch(error => {
-                     console.error("Error al crear la encuesta:", error);
-                     alert("Error al crear la encuesta: " + error.message);
-              });
-    });
+                      }
+                        return response.json();
+                  })
+                  .then(data => {
+                          console.log("Encuesta creada:", data);
+                          window.location.href = "VerMisEncuestas";
+                  })
+                  .catch(error => {
+                         console.error("Error al crear la encuesta:", error);
+                         alert("Error al crear la encuesta: " + error.message);
+                  });
+        });
+
+  
 
   </script>
+<style>
+    body {
+        background-color: #F9FAFB;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .crear-encuesta-wrapper {
+        max-width: 700px;
+        margin: 60px auto;
+        padding: 20px;
+    }
+
+    .crear-encuesta-titulo {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        color: #2D3748;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #E2E8F0;
+        padding-bottom: 10px;
+    }
+
+    .crear-encuesta-formulario {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    label {
+        font-weight: 600;
+        color: #4A5568;
+    }
+
+    input[type="text"] {
+        padding: 12px;
+        border: 1px solid #CBD5E0;
+        border-radius: 6px;
+        font-size: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+    }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3182CE;
+        }
+
+    .contenedor-preguntas {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .pregunta-item {
+        display: grid;
+        grid-template-columns: 1fr 80px;
+        gap: 10px;
+    }
+
+    .numero {
+        text-align: center;
+    }
+
+    .botones-opciones {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+    }
+
+        .botones-opciones button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .botones-opciones .guardar {
+            background-color: #38A169;
+            color: white;
+        }
+
+            .botones-opciones .guardar:hover {
+                background-color: #2F855A;
+            }
+
+        .botones-opciones .cancelar {
+            background-color: #E53E3E;
+            color: white;
+        }
+
+            .botones-opciones .cancelar:hover {
+                background-color: #C53030;
+            }
+
+        .botones-opciones button:not(.guardar):not(.cancelar) {
+            background-color: #4299E1;
+            color: white;
+        }
+
+            .botones-opciones button:not(.guardar):not(.cancelar):hover {
+                background-color: #3182CE;
+            }
+
+</style>

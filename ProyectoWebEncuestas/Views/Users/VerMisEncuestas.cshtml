@@ -1,23 +1,15 @@
 ﻿@{
     Layout = "_Layout";
 }
-<main>
-    <div class="container">
-
-        <!-- Filtro por fecha -->
-        <section class="filter-section">
-            <label for="fechaFiltro" class="filter-label">Filtrar por fecha:</label>
-            <input type="date" id="fechaFiltro" />
-            <button id="quitarFiltro" class="btn-clear-filter">Limpiar filtro</button>
-        </section>
-
-        <div class="card-surv" id="encuestasContainer">
-
+<main class="encuestas-dashboard">
+    <div class="contenedor-encuestas">
+        <div class="encabezado-encuestas">
+            <h2>Mis encuestas</h2>
+            <button id="btnAgregarEncuesta" class="btn-agregar" aria-label="Agregar nueva encuesta">➕ Nueva Encuesta</button>
         </div>
-
-        <a href="/Users/AgregarEncuesta" class="add-button" title="Agregar nueva encuesta">+</a>
-
-
+        <section class="grid-encuestas" id="encuestasContainer">
+            <p>Cargando encuestas...</p>
+        </section>
     </div>
 
 </main>
@@ -49,23 +41,28 @@
 
             listaEncuestas.forEach(encuesta => {
                 const card = document.createElement("div");
-                card.className = "card-surv";
+                card.className = "encuesta-card";
+                                card.style.cursor = "pointer";
 
                   const fechaISO = new Date(encuesta.fechaCreacion).toISOString().split("T")[0]; // yyyy-mm-dd
 
-                card.innerHTML = `
-                      <a  href="/Users/DetalleEncuesta?id=${encuesta.id}" class="survey-card" data-fecha="${fechaISO}">
-                        <div class="survey-info2">
-                       <strong>${encuesta.titulo}</strong><br />
-                       <small>Creada el ${new Date(encuesta.fechaCreacion).toLocaleDateString()}</small>
-                        </div>
-                      </a>
-                      <div class="survey-actions">
-                         <a href="/Users/EditarEncuesta?id=${encuesta.id}" class="edit-btn" title="Editar encuesta">✏️</a>
-                         <a href="/Users/EliminarEncuesta?id=${encuesta.id}"  class="delete-btn" title="Eliminar encuesta">🗑️</a>
-                      </div>
-                `;
-
+                  card.innerHTML = `
+        <div class="encuesta-card-content">
+            <h3>${encuesta.titulo}</h3>
+            <div class="encuesta-actions">
+                <a href="/Users/EditarEncuesta?id=${encuesta.id}" class="edit-btn" title="Editar encuesta"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="none" stroke="#2D4F2B" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m5 16l-1 4l4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0zM15 6l3 3m-5 11h8"/></svg></a>
+                <a href="/Users/EliminarEncuesta?id=${encuesta.id}" class="delete-btn" title="Eliminar encuesta"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="#2D4F2B" d="M7 21q-.825 0-1.412-.587T5 19V6q-.425 0-.712-.288T4 5t.288-.712T5 4h4q0-.425.288-.712T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5t-.288.713T19 6v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zm-7 11q.425 0 .713-.288T11 16V9q0-.425-.288-.712T10 8t-.712.288T9 9v7q0 .425.288.713T10 17m4 0q.425 0 .713-.288T15 16V9q0-.425-.288-.712T14 8t-.712.288T13 9v7q0 .425.288.713T14 17M7 6v13z"/></svg></a>
+            </div>
+        </div>
+    `;
+                   card.addEventListener("click", function () {
+                    window.location.href = `DetalleEncuesta?id=${encuesta.id}`;
+                });
+                   card.querySelectorAll('.survey-actions a').forEach(a => {
+        a.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+    });
                 container.appendChild(card);
             });
 
@@ -77,44 +74,73 @@
 
     window.addEventListener("DOMContentLoaded", cargarMisEncuestas);
 
-    // Función para filtrar encuestas por fecha
-        const fechaInput = document.getElementById('fechaFiltro');
-    const btnQuitarFiltro = document.getElementById('quitarFiltro');
-
-     btnQuitarFiltro.style.display = 'none';
+  
 
 
-    fechaInput.addEventListener('input', function () {
-        const filtro = this.value; // yyyy, yyyy-mm, yyyy-mm-dd
-        const encuestas = document.querySelectorAll('#encuestasContainer .survey-card');
-
-        if (filtro) {
-            btnQuitarFiltro.style.display = 'inline';
-        } else {
-            btnQuitarFiltro.style.display = 'none';
-        }
-
-        encuestas.forEach(encuesta => {
-            const fecha = encuesta.getAttribute('data-fecha');
-
-            if (!filtro || fecha.startsWith(filtro)) {
-                encuesta.style.display = 'block';
-            } else {
-                encuesta.style.display = 'none';
-            }
-        });
+    document.getElementById("btnAgregarEncuesta").addEventListener("click", function () {
+        window.location.href = "/Users/AgregarEncuesta";
     });
-
-    btnQuitarFiltro.addEventListener('click', function () {
-        fechaInput.value = "";
-        this.style.display = 'none';
-
-        // Mostrar todas las encuestas
-        const encuestas = document.querySelectorAll('#encuestasContainer .survey-card');
-        encuestas.forEach(encuesta => {
-            encuesta.style.display = 'block';
-        });
-    });
-
 
 </script>
+<style>
+    .encuesta-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 2px 12px rgba(44,62,80,0.07);
+        padding: 24px 28px 18px 28px;
+        margin: 18px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        transition: box-shadow 0.2s;
+        position: relative;
+        min-width: 260px;
+    }
+
+        .encuesta-card:hover {
+            box-shadow: 0 4px 24px rgba(44,62,80,0.13);
+        }
+
+    /* Contenido de la tarjeta */
+    .encuesta-card-content {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* Título */
+    .encuesta-card h3 {
+        margin: 0;
+        font-size: 1.15rem;
+        color: #23422a;
+        font-weight: 600;
+    }
+
+    /* Acciones */
+    .encuesta-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+        .encuesta-actions a {
+            text-decoration: none;
+            font-size: 1.3rem;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: background 0.15s;
+            color: #23422a;
+            background: #f3f6f4;
+            border: 1px solid #e0e0e0;
+        }
+
+            .encuesta-actions a.edit-btn:hover {
+                background: #e0f7fa;
+                color: #00796b;
+            }
+
+            .encuesta-actions a.delete-btn:hover {
+                background: #ffebee;
+                color: #c62828;
+            }
+</style>

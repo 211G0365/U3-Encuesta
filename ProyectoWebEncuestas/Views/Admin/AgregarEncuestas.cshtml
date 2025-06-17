@@ -23,198 +23,122 @@
     </form>
 </main>
 <script>
-    const token = localStorage.getItem("token");
-       let questionCount = 1;
+  const token = localStorage.getItem("token");
+     let questionCount = 1;
+      function addQuestion() {
+        if (questionCount >= 10) {
+          alert("Solo se permiten hasta 10 preguntas.");
+          return;
+        }
+        questionCount++;
 
-         // Función para agregar nuevas preguntas
-        function addQuestion() {
-          if (questionCount >= 10) {
+        const container = document.getElementById("questionsContainer");
+        const div = document.createElement("div");
+        div.className = "form-group question-item";
+
+           div.innerHTML = `
+             <div class="question-input-wrapper">
+              <div class="text-input-group">
+                <input type="text" id="question${questionCount}" name="questions[]" required placeholder="Escriba la siguiente pregunta" />
+              </div>
+            </div>
+      `;
+
+      container.appendChild(div);
+    }
+
+         function cancelar() {
+              window.history.back();
+
+          }
+
+        document.getElementById("addSurveyForm").addEventListener("submit", function(event){
+              event.preventDefault();
+
+              const titulo = document.getElementById("surveyName").value;
+              const questionsInputs = document.querySelectorAll('input[name="questions[]"]');
+              const numbersInputs = document.querySelectorAll('input[name="questionNumbers[]"]');
+
+              const preguntas = [];
+
+                for (let i = 0; i < questionsInputs.length; i++) {
+                     const descripcion = questionsInputs[i].value;
+                     preguntas.push({
+                         Descripcion: descripcion,
+                         NumeroPregunta: i + 1
+                    });
+                }
+
+                const data= {
+                      Titulo: titulo,
+                      Preguntas: preguntas
+                };
+
+                  fetch("https://encuesta-api.websitos256.com/api/encuestas/crear", {
+                        method: "POST",
+                        headers:{
+                              "Authorization": `Bearer ${token}`,
+                                  "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                  }).
+                  then(response => {
+                          if (!response.ok) {
+                             return response.json().then(err => {throw err;
+                          });
+
+                      }
+                        return response.json();
+                  })
+                  .then(data => {
+                          console.log("Encuesta creada:", data);
+                          window.location.href = "/Admin/Encuestas";
+                  })
+                  .catch(error => {
+                         console.error("Error al crear la encuesta:", error);
+                         alert("Error al crear la encuesta: " + error.message);
+                  });
+        });
+
+  
+
+  </script>
+@* <script>
+    const token = localStorage.getItem("token");
+    let questionCount = 1;
+
+    // Función para agregar nuevas preguntas
+    function addQuestion() {
+        if (questionCount >= 10) {
             alert("Solo se permiten hasta 10 preguntas.");
             return;
-          }
-          questionCount++;
+        }
+        questionCount++;
 
-          const container = document.getElementById("questionsContainer");
-          const div = document.createElement("div");
-          div.className = "form-group question-item";
+        const container = document.getElementById("questionsContainer");
+        const div = document.createElement("div");
+        div.className = "form-group question-item";
 
-             div.innerHTML = `
+        div.innerHTML = `
           <div class="question-input-wrapper">
-            <div class="text-input-group">
-              <input type="text" id="question${questionCount}" name="questions[]" required placeholder="Escriba la siguiente pregunta" />
-            </div>
-          </div>
+            <div class="text-input
         `;
-
         container.appendChild(div);
-      }
+    }
 
-        function cancelar() {
-            window.history.back();
-          
+    // Función para obtener las preguntas y sus números
+    function obtenerPreguntas() {
+        const questionsInputs = document.querySelectorAll('input[name="questions[]"]');
+        const preguntas = [];
+
+        for (let i = 0; i < questionsInputs.length; i++) {
+            const descripcion = questionsInputs[i].value;
+            preguntas.push({
+                Descripcion: descripcion,
+                NumeroPregunta: i + 1 // Asigna el número de pregunta según el orden
+            });
         }
 
-      document.getElementById("addSurveyForm").addEventListener("submit", function(event){
-            event.preventDefault();
-
-            const titulo = document.getElementById("surveyName").value;
-            const questionsInputs = document.querySelectorAll('input[name="questions[]"]');
-            const numbersInputs = document.querySelectorAll('input[name="questionNumbers[]"]');
-
-            const preguntas = [];
-
-              for (let i = 0; i < questionsInputs.length; i++) {
-                   const descripcion = questionsInputs[i].value;
-
-                  const numero = parseInt(numbersInputs[i].value);
-
-                  preguntas.push({
-                       Descripcion: descripcion,
-                       NumeroPregunta : numero
-                  });
-              }
-
-              const data= {
-                    Titulo: titulo,
-                    Preguntas: preguntas
-              };
-
-                fetch("https://encuesta-api.websitos256.com/api/encuestas/crear", {
-                      method: "POST",
-                      headers:{
-                            "Authorization": `Bearer ${token}`,
-                                "Content-Type": "application/json"
-                      },
-                      body: JSON.stringify(data)
-                }).
-                then(response => {
-                        if (!response.ok) {
-                           return response.json().then(err => {throw err;
-                        });
-
-                    }
-                      return response.json();
-                })
-                .then(data => {
-                        console.log("Encuesta creada:", data);
-                        alert("Encuesta creada exitosamente");
-                        window.location.href = "/Admin/Encuestas";
-                })
-                .catch(error => {
-                       console.error("Error al crear la encuesta:", error);
-                       alert("Error al crear la encuesta: " + error.message);
-                });
-      });
-
-</script>
-<style>
-    body {
-        background-color: #F9FAFB;
-        font-family: 'Segoe UI', sans-serif;
+        return preguntas;
     }
-
-    .crear-encuesta-wrapper {
-        max-width: 700px;
-        margin: 60px auto;
-        padding: 20px;
-    }
-
-    .crear-encuesta-titulo {
-        font-size: 2rem;
-        margin-bottom: 30px;
-        color: #2D3748;
-        text-align: left;
-        font-weight: 600;
-        border-bottom: 2px solid #E2E8F0;
-        padding-bottom: 10px;
-    }
-
-    .crear-encuesta-formulario {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    label {
-        font-weight: 600;
-        color: #4A5568;
-    }
-
-    input[type="text"] {
-        padding: 12px;
-        border: 1px solid #CBD5E0;
-        border-radius: 6px;
-        font-size: 1rem;
-        width: 100%;
-        box-sizing: border-box;
-        transition: border-color 0.3s ease;
-    }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #3182CE;
-        }
-
-    .contenedor-preguntas {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .pregunta-item {
-        display: grid;
-        grid-template-columns: 1fr 80px;
-        gap: 10px;
-    }
-
-    .numero {
-        text-align: center;
-    }
-
-    .botones-opciones {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin-top: 15px;
-    }
-
-        .botones-opciones button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .botones-opciones .guardar {
-            background-color: #38A169;
-            color: white;
-        }
-
-            .botones-opciones .guardar:hover {
-                background-color: #2F855A;
-            }
-
-        .botones-opciones .cancelar {
-            background-color: #E53E3E;
-            color: white;
-        }
-
-            .botones-opciones .cancelar:hover {
-                background-color: #C53030;
-            }
-
-        .botones-opciones button:not(.guardar):not(.cancelar) {
-            background-color: #4299E1;
-            color: white;
-        }
-
-            .botones-opciones button:not(.guardar):not(.cancelar):hover {
-                background-color: #3182CE;
-            }
-
-
-
-    
-</style>
+</script> *@

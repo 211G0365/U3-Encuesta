@@ -156,14 +156,15 @@
     margin: auto;
 }
 
-.container {
+.contenedor-encuestas {
     max-width: 960px;
-    margin: 80px auto 40px;
-    background-color: #fff;
+    margin: 60px auto 40px;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-top: 4px solid #708A58;
+}
+
+.container{
+    margin: 20px auto 40px;
+    padding:20px;
 }
 
 .featured-surveys,
@@ -480,6 +481,8 @@
 .btn-primary {
     background-color: #708A58;
     color: white;
+    padding:10px;
+    border-radius:6px;
 }
 
     .btn-primary:hover {
@@ -650,11 +653,10 @@
     color: #5cb85c;
 }
 
-.survey-header {
+.encuesta-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 60px auto 40px;
     flex-wrap: wrap;
     gap: 10px;
 }
@@ -676,12 +678,10 @@
     .question-list li {
         background-color: #f9f9f9;
         padding: 14px 16px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
         font-size: 1rem;
         color: #444;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        border-left: 3px solid #708A58;
+   
+     
     }
 
 .delete-buttonn {
