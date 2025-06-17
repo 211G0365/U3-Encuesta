@@ -2,17 +2,17 @@
     Layout = "_LayoutAdmin";
 }
 
-
 <main class="encuestas-dashboard">
     <div class="encabezado-encuestas">
         <h1>Gestor de Encuestas</h1>
+         <button id="btnAgregarEncuesta" class="btn-agregar" href="/Admin/AgregarEncuestas" aria-label="Agregar nueva encuesta">➕ Nueva Encuesta</button>
+
     </div>
 
     <section class="grid-encuestas" id="encuestasContainer">
         <p>Cargando encuestas...</p>
     </section>
 
-    <a href="/Admin/AgregarEncuestas" class="btn-agregar-flotante" title="Agregar nueva encuesta" aria-label="Agregar nueva encuesta">＋</a>
 </main>
 
 <script>
@@ -80,7 +80,7 @@
         });
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        cargarEncuestas();
+    document.getElementById("btnAgregarEncuesta").addEventListener("click", function() {
+        window.location.href = "/Admin/AgregarEncuestas";
     });
 </script>

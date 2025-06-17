@@ -241,7 +241,7 @@
 
 .stat-card {
     background-color: white;
-    border-left: 5px solid #708A58;
+
     border-radius: 8px;
     text-align: center;
     padding: 20px;
@@ -1027,13 +1027,7 @@ input[type="text"] {
         justify-content: center;
     }
 
-    .btn-agregar-flotante {
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
-        bottom: 20px;
-        right: 20px;
-    }
+  
 }
 
 .dashboard-alt {
@@ -1247,7 +1241,6 @@ input[type="text"] {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border-left: 6px solid #4CAF50;
     transition: box-shadow 0.3s ease;
     cursor: default;
 }
@@ -1296,26 +1289,18 @@ input[type="text"] {
             box-shadow: 0 4px 10px rgba(76,175,80,0.6);
         }
 
-.btn-agregar-flotante {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    background-color: #4CAF50;
+.btn-agregar {
+    background-color: #3182ce;
     color: white;
-    font-size: 30px;
     border: none;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 6px 14px rgba(76,175,80,0.6);
-    text-decoration: none;
-    z-index: 999;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.4);
     transition: background-color 0.3s ease;
 }
 
-    .btn-agregar-flotante:hover {
-        background-color: #388E3C;
+    .btn-agregar:hover {
+        background-color: #2c6cb0;
     }
