@@ -2,37 +2,40 @@
     Layout = "_LayoutAdmin";
 }
 
-<main class="main-content2">
-    <section class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-title">Encuestas respondidas</div>
-            <span class="stat-number" id="stat-respondidas">...</span>
-        </div>
-        <div class="stat-card">
-            <div class="stat-title">Encuestas pendientes</div>
-            <span class="stat-number" id="stat-pendientes">...</span>
-        </div>
-        <div class="stat-card">
-            <div class="stat-title">Promedio de respuestas por encuesta</div>
-            <span class="stat-number" id="stat-promedio">...</span>
-        </div>
 
-        <div class="stat-card">
-            <div class="stat-title">Total de alumnos entrevistados</div>
-            <span class="stat-number" id="stat-entrevistados">...</span>
-        </div>
+<main class="dashboard-alt">
+
+    <!-- Sección de estadísticas con barras -->
+    <section>
+        <div class="bar-label">Encuestas Respondidas</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="stat-respondidas">...</div></div>
+
+        <div class="bar-label">Encuestas Pendientes</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="stat-pendientes">...</div></div>
+
+        <div class="bar-label">Promedio por Encuesta</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="stat-promedio">...</div></div>
+
+        <div class="bar-label">Alumnos Entrevistados</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="stat-entrevistados">...</div></div>
     </section>
 
-    <section class="encuestas-lista">
-        <h2 class="seccion-titulo">Total de Respuestas por encuesta</h2>
-        <ul class="encuestas-ul">
-        </ul>
-    </section>
+    <section class="seccion-doble">
+        <!-- ENCUESTAS -->
+        <div class="tarjetas-encuestas">
+            <h2 class="titulo-seccion">Respuestas por Encuesta</h2>
+            <div id="acordeon-encuestas" class="tarjetas-contenedor">
+                <div><em>Cargando encuestas...</em></div>
+            </div>
+        </div>
 
-    <section class="active-users">
-        <h2>Usuarios activos aplicando encuestas</h2>
-        <ul class="user-list" id="lista-usuarios">
-        </ul>
+        <!-- USUARIOS -->
+        <div class="usuarios-activos">
+            <h2 class="titulo-seccion">Usuarios aplicando encuestas</h2>
+            <div id="lista-usuarios" class="chips-usuarios">
+                <span><em>Cargando...</em></span>
+            </div>
+        </div>
     </section>
 </main>
 
@@ -44,145 +47,81 @@
     const connection = new signalR.HubConnectionBuilder()
         .withUrl(`${baseApiUrl}/hubs/estadisticas`, {
             accessTokenFactory: () => token
-        })
-        .configureLogging(signalR.LogLevel.Information)
-        .build();
+        }).build();
 
-    //cargar usuarios activos 
-    function renderizarUsuariosActivos(usuarios) {
-        const lista = document.getElementById("lista-usuarios");
-        lista.innerHTML = "";
-
-        if (!usuarios || usuarios.length === 0) {
-            lista.innerHTML = "<li><em>No hay usuarios activos</em></li>";
-            return;
-        }
-
-        usuarios.forEach(nombre => {
-            const li = document.createElement("li");
-            li.innerHTML = `<span>${nombre}</span>`;
-            lista.appendChild(li);
-        });
-    }
-
-    connection.on("ActualizarEstadisticas", () => {
-        console.log("Evento: ActualizarEstadisticas");
-        cargarTotalRespondidas();
-        cargarTotalPendientes();
-        cargarPromedioRespuestas();
-        cargarTotalEntrevistados();
-        cargarEncuestasConRespuestas();
+    connection.on("ActualizarEstadisticas", cargarTodo);
+    connection.on("UsuariosActivos", renderizarUsuariosActivos);
+    connection.start().then(() => {
+        connection.invoke("GetUsuariosActivos").then(renderizarUsuariosActivos);
     });
 
-    connection.on("UsuariosActivos", renderizarUsuariosActivos);
-
-    connection.start()
-        .then(() => {
-            console.log("Conectado a SignalR");
-
-            connection.invoke("GetUsuariosActivos")
-                .then(renderizarUsuariosActivos)
-                .catch(err => {
-                    console.error("Error al invocar GetUsuariosActivos:", err);
-                });
-        })
-        .catch(err => {
-            console.error("Error al conectar a SignalR:", err);
-        });
-
-    async function cargarTotalRespondidas() {
+    async function fetchStat(url, id) {
         try {
-            const res = await fetch(`${baseApiUrl}/api/encuestas/totalrespondidas`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const res = await fetch(`${baseApiUrl}${url}`, { headers: { Authorization: `Bearer ${token}` } });
             const data = await res.json();
-            document.getElementById("stat-respondidas").innerText = data;
-        } catch (err) {
-            console.error("Error totalrespondidas:", err);
-            document.getElementById("stat-respondidas").innerText = "Error";
+            actualizarBarra(id, data);
+        } catch {
+            actualizarBarra(id, "Error");
         }
     }
 
-    async function cargarTotalPendientes() {
-        try {
-            const res = await fetch(`${baseApiUrl}/api/encuestas/totalnorespondidas`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const data = await res.json();
-            document.getElementById("stat-pendientes").innerText = data;
-        } catch (err) {
-            console.error("Error totalnorespondidas:", err);
-            document.getElementById("stat-pendientes").innerText = "Error";
+    function actualizarBarra(id, valor) {
+        const el = document.getElementById(id);
+        el.innerText = valor;
+        if (!isNaN(valor)) {
+            let percent = Math.min(100, valor * 10); // escala para ejemplo
+            el.style.width = percent + "%";
+        } else {
+            el.style.width = "0%";
         }
     }
 
-    async function cargarPromedioRespuestas() {
-        try {
-            const res = await fetch(`${baseApiUrl}/api/encuestas/promedioRespuestasPorEncuesta`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const data = await res.json();
-            document.getElementById("stat-promedio").innerText = data;
-        } catch (err) {
-            console.error("Error promedioRespuestasPorEncuesta:", err);
-            document.getElementById("stat-promedio").innerText = "Error";
-        }
-    }
-
-    async function cargarTotalEntrevistados() {
-        try {
-            const res = await fetch(`${baseApiUrl}/api/encuestas/totalAlumnosEntrevistados`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const data = await res.json();
-            document.getElementById("stat-entrevistados").innerText = data;
-        } catch (err) {
-            console.error("Error totalAlumnosEntrevistados:", err);
-            document.getElementById("stat-entrevistados").innerText = "Error";
-        }
-    }
-
-    async function cargarEncuestasConRespuestas() {
+      async function cargarEncuestasConRespuestas() {
         try {
             const res = await fetch(`${baseApiUrl}/api/encuestas/EncuestaConTotalRespuestas`, {
-                headers: { "Authorization": `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${token}` }
             });
-
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
             const encuestas = await res.json();
-            const listaEncuestas = document.querySelector(".encuestas-ul");
-            listaEncuestas.innerHTML = "";
+            const contenedor = document.getElementById("acordeon-encuestas");
+            contenedor.innerHTML = "";
 
-            if (encuestas.length === 0) {
-                listaEncuestas.innerHTML = "<li><em>No hay encuestas disponibles</em></li>";
+            if (!encuestas.length) {
+                contenedor.innerHTML = "<div><em>No hay encuestas</em></div>";
                 return;
             }
 
-            encuestas.slice(0, 10).forEach(encuesta => {
-                const li = document.createElement("li");
-                li.classList.add("encuesta-item");
-                li.innerHTML = `
-                    <span class="nombre-encuesta">${encuesta.nombreEncuesta}</span>
-                    <span class="contador-respuestas">${encuesta.totalRespuestas} respuestas</span>
+            encuestas.slice(0, 10).forEach(e => {
+                const div = document.createElement("div");
+                div.className = "tarjeta-encuesta";
+                div.innerHTML = `
+                    <span>${e.nombreEncuesta}</span>
+                    <span>${e.totalRespuestas} respuestas</span>
                 `;
-                listaEncuestas.appendChild(li);
+                contenedor.appendChild(div);
             });
 
-        } catch (err) {
-            console.error("Error al cargar encuestas con respuestas:", err);
+        } catch {
+            document.getElementById("acordeon-encuestas").innerHTML = "<div><em>Error al cargar encuestas</em></div>";
         }
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-        cargarTotalRespondidas();
-        cargarTotalPendientes();
-        cargarPromedioRespuestas();
-        cargarTotalEntrevistados();
+     function renderizarUsuariosActivos(lista) {
+        const contenedor = document.getElementById("lista-usuarios");
+        contenedor.innerHTML = lista.length
+            ? lista.map(nombre => {
+                const inicial = nombre.charAt(0).toUpperCase();
+                return `<div class="chip-usuario"><span class="avatar">${inicial}</span>${nombre}</div>`;
+            }).join("")
+            : "<span><em>No hay usuarios activos</em></span>";
+    }
+
+    function cargarTodo() {
+        fetchStat("/api/encuestas/totalrespondidas", "stat-respondidas");
+        fetchStat("/api/encuestas/totalnorespondidas", "stat-pendientes");
+        fetchStat("/api/encuestas/promedioRespuestasPorEncuesta", "stat-promedio");
+        fetchStat("/api/encuestas/totalAlumnosEntrevistados", "stat-entrevistados");
         cargarEncuestasConRespuestas();
-    });
+    }
+
+    window.addEventListener("DOMContentLoaded", cargarTodo);
 </script>

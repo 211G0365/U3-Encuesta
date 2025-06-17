@@ -1,7 +1,4 @@
-﻿@{
-    Layout = null;
-}
-
+﻿
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,34 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="~/assets/Login.css" /> 
-    <!--Luego ajustar y poner los css y fuentes-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
-    <div class="login-page">
-        <div class="login-box">
-            <div class="login-header">
-                <i class="fas fa-user-circle"></i>
-                <h2>Iniciar Sesión</h2>
+    <form class="form">
+        <h2 class="titulo">Encuestas</h2>
+        <h2 class="titulo-inicio">Iniciar sesión</h2>
+
+        <div class="form_container">
+            <div class="form_group">
+                <input type="text" id="username" class="form_input" placeholder=" ">
+                <label for="username" class="form_label">Nombre de usuario</label>
+                <span class="form_line"></span>
+                <!--<label class="form_label2">*Nombre de usuario incorrecto o no existe</label>-->
             </div>
-            <form class="login-form">
-                <div class="form-group input-icon">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="username" name="username" placeholder="Usuario" required />
-                </div>
-                <div class="form-group input-icon">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" name="password" placeholder="Contraseña" required />
-                </div>
-                <button type="submit">Ingresar</button>
-            </form>
+            <div class="form_group">
+                <input type="password" id="password" class="form_input" placeholder=" ">
+                <label for="password" class="form_label">Contraseña</label>
+                <span class="form_line"></span>
+                <label class="form_label2" id="error"></label>
+
+            </div>
+            <input type="submit" class="form_submit" value="Ingresar">
         </div>
-    </div>
+    </form>
 </body>
 </html>
 
 <script>
-    document.querySelector('.login-form').addEventListener('submit', async function (e) {
+    document.querySelector('.form').addEventListener('submit', async function (e) {
         e.preventDefault();
 
 

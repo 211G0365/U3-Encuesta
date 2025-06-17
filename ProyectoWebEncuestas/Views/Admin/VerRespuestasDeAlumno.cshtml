@@ -1,23 +1,19 @@
 ﻿@{
     Layout = "_LayoutAdmin";
 }
-<div class="respuestas">
-    <h2 class="seccion-titulo">
-        Respuestas de alumno: <span class="nombre-alumno"></span>
-        | No. Control <span class="numero-control"></span>
-    </h2>
-    <div class="rating-labels">
-        <span class="label-opcion uno">Muy malo (1)</span>
-        <span class="label-opcion dos">Malo (2)</span>
-        <span class="label-opcion tres">Regular (3)</span>
-        <span class="label-opcion cuatro">Bueno (4)</span>
-        <span class="label-opcion cinco">Excelente (5)</span>
-    </div>
-    <div id="respuestas-container">
+<main class="respuestas-wrapper">
+    <section class="resumen-alumno">
+        <h2>📄 Respuestas del Alumno</h2>
+        <div class="datos-alumno">
+            <p><strong>👤 Nombre:</strong> <span class="nombre-alumno"></span></p>
+            <p><strong>🎓 No. Control:</strong> <span class="numero-control"></span></p>
+        </div>
+    </section>
 
-</div>
- 
-</div>
+    <section class="respuestas-listado" id="respuestas-container">
+        <!-- Las respuestas se insertan aquí -->
+    </section>
+</main>
 
 <script>
     function getQueryParams() {
@@ -36,14 +32,14 @@
         const { idEncuesta, idAlumno } = getQueryParams();
 
         if (!idEncuesta || !idAlumno) {
-            alert("No se proporcionaron idEncuesta o idAlumno en la URL.");
+            alert("Faltan parámetros en la URL.");
             return;
         }
 
         const token = getToken();
 
         if (!token) {
-            alert("No hay token JWT, debes iniciar sesión.");
+            alert("Token no disponible. Inicia sesión.");
             return;
         }
 
@@ -61,30 +57,104 @@
 
             const data = await response.json();
 
-                document.querySelector('.nombre-alumno').textContent = data.nombre;
-                document.querySelector('.numero-control').textContent = data.numeroControl ?? '---';
-
+            document.querySelector('.nombre-alumno').textContent = data.nombre;
+            document.querySelector('.numero-control').textContent = data.numeroControl ?? '---';
 
             const container = document.getElementById('respuestas-container');
             container.innerHTML = '';
 
             data.preguntas.forEach((pregunta, index) => {
+                const valor = parseInt(pregunta.valorRespuesta);
+                const colores = ["#e53e3e", "#dd6b20", "#d69e2e", "#38a169", "#3182ce"];
+                const color = colores[valor - 1] || "#cbd5e0";
+
                 const div = document.createElement('div');
-                div.classList.add('tarjeta-respuesta');
-
+                div.classList.add('respuesta-card');
                 div.innerHTML = `
-                    <p class="pregunta"><strong>${index + 1}. ${pregunta.descripcion}</strong></p>
-                    <p class="respuesta">${pregunta.valorRespuesta}</p>
+                    <p class="pregunta-texto"><strong>${index + 1}. ${pregunta.descripcion}</strong></p>
+                    <div class="barra-contenedor">
+                        <div class="barra-respuesta" style="width: ${valor * 20}%; background-color: ${color};">
+                            ${valor}/5
+                        </div>
+                    </div>
                 `;
-
                 container.appendChild(div);
             });
 
         } catch (error) {
-            console.error("Error cargando las respuestas:", error);
+            console.error("Error al cargar respuestas:", error);
             alert("No se pudieron cargar las respuestas. " + error.message);
         }
     }
 
     window.addEventListener('DOMContentLoaded', cargarRespuestas);
 </script>
+
+<style>
+    body {
+        background-color: #f7fafc;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .respuestas-wrapper {
+        max-width: 800px;
+        margin: 50px auto;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+        padding: 30px;
+    }
+
+    .resumen-alumno {
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 15px;
+    }
+
+        .resumen-alumno h2 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+    .datos-alumno p {
+        font-size: 1rem;
+        color: #4a5568;
+        margin: 4px 0;
+    }
+
+    .respuestas-listado {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .respuesta-card {
+        background-color: #edf2f7;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    }
+
+    .pregunta-texto {
+        font-size: 1rem;
+        color: #2d3748;
+        margin-bottom: 10px;
+    }
+
+    .barra-contenedor {
+        width: 100%;
+        background-color: #e2e8f0;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .barra-respuesta {
+        height: 30px;
+        color: white;
+        font-weight: bold;
+        line-height: 30px;
+        text-align: center;
+        transition: width 0.4s ease-in-out;
+    }
+</style>

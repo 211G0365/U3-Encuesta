@@ -1,7 +1,7 @@
 ﻿body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    background-color: #f8f9fa;
 }
 
 /* Barra superior */
@@ -11,7 +11,7 @@
     left: 0;
     right: 0;
     height: 60px;
-    background-color: #007bff;
+    background-color: #2D4F2B;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -25,6 +25,7 @@
     font-size: 1.4rem;
     font-weight: bold;
     margin: 0;
+    color: white;
 }
 
 .menu-toggle {
@@ -86,17 +87,19 @@
 
 .user-icon {
     font-size: 1.4rem;
+    color: #2D4F2B;
 }
 
 .user-name {
     font-weight: bold;
-    color: #333;
+    color: #2D4F2B;
 }
 
 .close-menu {
     font-size: 28px;
     cursor: pointer;
     user-select: none;
+    color: #2D4F2B;
 }
 
 .logout-link {
@@ -129,6 +132,7 @@
 
     .menu-content a:hover {
         background-color: #f0f0f0;
+        color: #2D4F2B;
     }
 
 @keyframes slideInRight {
@@ -147,12 +151,12 @@
     max-width: 1000px;
     margin: auto;
 }
+
 .main-content2 {
     padding: 80px 20px 20px;
     max-width: 1000px;
     margin: auto;
 }
-
 
 .container {
     max-width: 960px;
@@ -161,6 +165,7 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #708A58;
 }
 
 .filter-section {
@@ -172,7 +177,7 @@
 
 .filter-label {
     font-weight: 600;
-    color: #333;
+    color: #2D4F2B;
 }
 
 /* Input filtro */
@@ -183,15 +188,18 @@
     border-radius: 4px;
 }
 
-
-.featured-surveys, .all-surveys {
+.featured-surveys,
+.all-surveys {
     margin-bottom: 30px;
 }
 
-    .featured-surveys h2, .all-surveys h2 {
+    .featured-surveys h2,
+    .all-surveys h2 {
         font-size: 1.3rem;
         margin-bottom: 15px;
-        color: #007bff;
+        color: #2D4F2B;
+        border-bottom: 2px solid #708A58;
+        padding-bottom: 5px;
     }
 
 /* Lista de encuestas */
@@ -212,12 +220,15 @@
     margin-bottom: 10px;
     text-decoration: none;
     color: #333;
+    transition: all 0.3s;
+    border-left: 4px solid #708A58;
 }
 
 .survey-info {
     flex: 1;
     text-decoration: none;
 }
+
 .survey-info2 {
     flex: 1;
     text-decoration: none;
@@ -236,9 +247,10 @@
     gap: 8px;
 }
 
-
 .survey-card:hover {
     background-color: #e9f3ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Tarjetas de estadísticas */
@@ -251,65 +263,69 @@
 
 .stat-card {
     background-color: white;
-    border-left: 5px solid #007bff;
+    border-left: 5px solid #708A58;
     border-radius: 8px;
     text-align: center;
     padding: 20px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
 }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
 
 .stat-title {
     font-size: 1rem;
     color: #555;
     margin-bottom: 10px;
-
 }
 
 .stat-number {
     font-size: 2rem;
     font-weight: bold;
-    color: #007bff;
+    color: #2D4F2B;
 }
-
 
 .active-users {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    margin:5px;
+    margin: 5px;
+    border-top: 3px solid #708A58;
 }
 
     .active-users h2 {
         font-size: 1.2rem;
         margin-bottom: 15px;
-        color: #333;
+        color: #2D4F2B;
     }
-
-
 
 .user-table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 10px; 
+    border-spacing: 0 10px;
     margin-top: 1rem;
     font-family: sans-serif;
 }
+
     .user-table th,
     .user-table td {
         border: 1px solid #ccc;
-        padding: 14px 20px; 
+        padding: 14px 20px;
         text-align: left;
         background-color: #fff;
         line-height: 1.6;
         vertical-align: middle;
-        margin:5px;
+        margin: 5px;
     }
 
     .user-table th {
         background-color: #f4f4f4;
         font-size: 1rem;
         font-weight: bold;
+        color: #2D4F2B;
     }
 
 .encuestas-lista {
@@ -318,12 +334,13 @@
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
+    border-top: 3px solid #708A58;
 }
 
 .seccion-titulo {
     font-size: 1.2rem;
     margin-bottom: 15px;
-    color: #333;
+    color: #2D4F2B;
 }
 
 .encuestas-ul {
@@ -340,13 +357,13 @@
             display: block;
             padding: 12px 0;
             text-decoration: none;
-            color: #007bff;
+            color: #708A58;
             font-weight: 500;
             transition: color 0.3s;
         }
 
             .encuestas-ul li a:hover {
-                color: #0056b3;
+                color: #2D4F2B;
             }
 
         .encuestas-ul li:last-child {
@@ -354,18 +371,20 @@
         }
 
 /* Botón eliminar y editar usuario */
-.edit-btn, .delete-btn {
+.edit-btn,
+.delete-btn {
     background: none;
     border: none;
     color: #d32f2f;
     font-size: 1.2rem;
     cursor: pointer;
     margin-left: auto;
-    margin-right:10px;
+    margin-right: 10px;
     transition: transform 0.2s;
 }
 
-    .delete-btn:hover, .edit-btn:hover {
+    .delete-btn:hover,
+    .edit-btn:hover {
         transform: scale(1.2);
     }
 
@@ -373,7 +392,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #28a745;
+    background-color: #708A58;
     color: white;
     font-size: 32px;
     padding: 12px 20px;
@@ -384,7 +403,7 @@
 }
 
     .add-button:hover {
-        background-color: #218838;
+        background-color: #2D4F2B;
     }
 
 /* Alinear correctamente el contenido de la lista de usuarios */
@@ -400,7 +419,7 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #007bff;
+    background-color: #708A58;
     color: white;
     border: none;
     font-size: 2rem;
@@ -414,7 +433,7 @@
 }
 
     .fab-add-user:hover {
-        background-color: #0056b3;
+        background-color: #2D4F2B;
         transform: scale(1.05);
     }
 
@@ -426,6 +445,7 @@
     max-width: 500px;
     margin: 80px auto 30px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #708A58;
 }
 
 .user-form {
@@ -436,7 +456,7 @@
 
     .user-form label {
         font-weight: bold;
-        color: #333;
+        color: #2D4F2B;
     }
 
     .user-form input[type="text"],
@@ -476,12 +496,12 @@
     }
 
 .btn-primary {
-    background-color: #d32f2f;
+    background-color: #708A58;
     color: white;
 }
 
     .btn-primary:hover {
-        background-color: #b71c1c;
+        background-color: #2D4F2B;
     }
 
 .btn-secondary {
@@ -501,6 +521,7 @@
     color: #d32f2f;
     font-weight: bold;
 }
+
 .encuestas-ul .encuesta-item {
     display: flex;
     justify-content: space-between;
@@ -515,9 +536,10 @@
 }
 
 .contador-respuestas {
-    color: #007bff;
+    color: #708A58;
     font-weight: bold;
 }
+
 .alumnos-container {
     display: flex;
     flex-direction: column;
@@ -535,6 +557,7 @@
     padding: 15px 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     transition: transform 0.2s ease;
+    border-left: 4px solid #708A58;
 }
 
     .alumno-card:hover {
@@ -554,21 +577,21 @@
         padding: 8px 16px;
         font-size: 0.9rem;
         border-radius: 6px;
-        background-color: #007bff;
+        background-color: #708A58;
         color: white;
         text-decoration: none;
         transition: background-color 0.3s;
     }
 
         .alumno-acciones .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #2D4F2B;
         }
 
 .subtitulo {
     margin-bottom: 15px;
     font-size: 1.2rem;
     font-weight: 600;
-    color: #333;
+    color: #2D4F2B;
 }
 
 .respuestas {
@@ -578,18 +601,19 @@
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.05);
     max-width: 800px;
     margin: 70px auto;
+    border-top: 4px solid #708A58;
 }
 
     .respuestas h2.seccion-titulo {
         font-size: 1.3rem;
-        color: #007bff;
+        color: #2D4F2B;
         margin-bottom: 25px;
         text-align: center;
     }
 
 .tarjeta-respuesta {
     border: 1px solid #ddd;
-    border-left: 4px solid #007bff;
+    border-left: 4px solid #708A58;
     border-radius: 8px;
     padding: 15px 20px;
     margin-bottom: 15px;
@@ -599,7 +623,7 @@
 .pregunta {
     font-weight: 600;
     margin: 0 0 5px;
-    color: #222;
+    color: #2D4F2B;
 }
 
 .respuesta {
@@ -625,27 +649,24 @@
 }
 
 .label-opcion.uno {
-    color: #d9534f; /* rojo suave */
+    color: #d9534f;
 }
 
 .label-opcion.dos {
-    color: #f0ad4e; /* naranja */
+    color: #f0ad4e;
 }
 
 .label-opcion.tres {
-    color: #f7e463; /* amarillo */
+    color: #f7e463;
 }
 
 .label-opcion.cuatro {
-    color: #5bc0de; /* azul */
+    color: #5bc0de;
 }
 
 .label-opcion.cinco {
-    color: #5cb85c; /* verde */
+    color: #5cb85c;
 }
-
-
-
 
 .survey-header {
     display: flex;
@@ -656,11 +677,10 @@
     gap: 10px;
 }
 
-
 .survey-subtitle {
     font-size: 1.3rem;
     margin-bottom: 20px;
-    color: #333;
+    color: #2D4F2B;
 }
 
 .question-list {
@@ -679,7 +699,9 @@
         font-size: 1rem;
         color: #444;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        border-left: 3px solid #708A58;
     }
+
 .delete-buttonn {
     background-color: #dc3545;
     color: white;
@@ -694,7 +716,7 @@
     gap: 4px;
     align-self: center;
     margin-top: 20px;
-    margin-left: 20px; 
+    margin-left: 20px;
 }
 
     .delete-buttonn:hover {
@@ -704,128 +726,129 @@
     .delete-buttonn:active {
         background-color: #bd2130;
     }
- /*Parte de agregar encuestas en admin*/
 
-    .form-group {
-        font-weight: 600;
-        margin-bottom: 16px;
+/*Parte de agregar encuestas en admin*/
+.form-group {
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #2D4F2B;
+}
+
+input[type="text"] {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.question-item {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.question-text {
+    flex: 1 1 60%;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #2D4F2B;
+}
+
+.question-input-wrapper {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 98%;
+    align-items: flex-start;
+}
+
+.text-input-group input,
+.number-input-group input {
+    width: 100%;
+    padding: 10px 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.text-input-group {
+    flex: 3;
+    min-width: 230px;
+    max-width: 90%;
+    flex-basis: 60%;
+}
+
+.number-input-group {
+    flex: 1;
+    min-width: 30px;
+    max-width: 35px;
+}
+
+.text-input-group,
+.number-input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.submit-button,
+.cancel-button,
+.next-button {
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-add {
+    background-color: #708A58;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+    .btn-add:hover {
+        background-color: #2D4F2B;
     }
 
+.cancel-button {
+    background-color: #dc3545;
+    color: white;
+}
 
-    input[type="text"] {
-        width: 95%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 1rem;
+    .cancel-button:hover {
+        background-color: #b02a37;
     }
 
-    .question-item {
-        margin-bottom: 20px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #ddd;
+.submit-button {
+    background-color: #708A58;
+    color: white;
+}
+
+    .submit-button:hover {
+        background-color: #2D4F2B;
     }
 
-    .question-text {
-        flex: 1 1 60%;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
-
-    .question-input-wrapper {
-        display: flex;
-        gap:1rem;
-        flex-wrap: wrap;
-        gap: 10px;
-        width: 98%;
-        align-items: flex-start;
-    }
-    .text-input-group input,
-    .number-input-group input {
-        width: 100%;
-        padding: 10px 10px;
-        font-size: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    .text-input-group {
-        flex: 3;
-        min-width: 230px;
-        max-width: 90%;
-        flex-basis: 60%;
-    }
-
-    .number-input-group {
-        flex: 1;
-        min-width: 30px;
-        max-width: 35px;
-    }
-
-
-    .text-input-group,
-    .number-input-group {
-        display: flex;
-        flex-direction: column;
-    }
-
-
-
-
-    .button-group {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-    }
-
-    .submit-button, .cancel-button, .next-button {
-        padding: 10px 20px;
-        font-weight: 600;
-        font-size: 1rem;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .btn-add {
-        background-color: #28a745;
-        color: white;
-        border: none;
-        padding: 10px 16px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-        .btn-add:hover {
-            background-color: #218838;
-        }
-
-
-    .cancel-button {
-        background-color: #dc3545;
-        color: white;
-          }
-
-        .cancel-button:hover {
-            background-color: #b02a37;
-        }
-
-    .submit-button {
-        background-color: #007bff;
-        color: white;
-    }
-
-        .submit-button:hover {
-            background-color: #0056b3;
-        }
-        /*Eliminar encuestas admin*/
+/*Eliminar encuestas admin*/
 .container .warning-text p {
     color: #d9534f;
     font-weight: bold;
@@ -848,13 +871,11 @@
         font-size: 1.5rem;
     }
 
-
-
     .encuestas-ul li a {
         display: block;
         padding: 12px 0;
         text-decoration: none;
-        color: #007bff;
+        color: #708A58;
         font-weight: 500;
         transition: background-color 0.3s, color 0.3s, padding-left 0.3s;
         padding-left: 10px;
@@ -863,10 +884,9 @@
 
         .encuestas-ul li a:hover {
             background-color: #e0f0ff;
-            color: #0056b3;
+            color: #2D4F2B;
             padding-left: 16px;
         }
-
 
     .seccion-titulo {
         font-size: 1.1rem;
@@ -966,7 +986,354 @@
         margin-top: 55px;
         margin-right: 180px;
     }
-   
 
+    .seccion-doble {
+        flex-direction: column;
+    }
 
+    .tarjetas-encuestas,
+    .usuarios-activos {
+        flex: 1 1 100%;
+    }
+
+    .tarjeta-encuesta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .chip-usuario {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+
+        .chip-usuario span.avatar {
+            width: 22px;
+            height: 22px;
+            font-size: 0.8rem;
+        }
+
+    .titulo-seccion {
+        text-align: center;
+        font-size: 1.1rem;
+    }
+
+    .tarjetas-contenedor {
+        gap: 12px;
+    }
+
+    /* Ajustes responsivos para tarjetas de encuestas */
+    .encuestas-dashboard {
+        padding: 20px 15px;
+    }
+
+    .encabezado-encuestas h1 {
+        font-size: 1.4rem;
+        text-align: center;
+        width: 100%;
+    }
+
+    .encuesta-card {
+        padding: 16px 18px;
+    }
+
+        .encuesta-card h3 {
+            font-size: 1.1rem;
+        }
+
+    .encuesta-acciones {
+        justify-content: center;
+    }
+
+    .btn-agregar-flotante {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        bottom: 20px;
+        right: 20px;
+    }
 }
+
+.dashboard-alt {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 70px 40px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.stat-bar {
+    background-color: #eee;
+    border-radius: 30px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    position: relative;
+    height: 40px;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2D4F2B, #708A58);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    font-weight: bold;
+    transition: width 0.5s ease;
+    width: 0%;
+}
+
+.bar-label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #2D4F2B;
+}
+
+.accordion {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.accordion-item {
+    border-bottom: 1px solid #ddd;
+}
+
+.accordion-header {
+    background-color: #f0f0f0;
+    padding: 14px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #2D4F2B;
+    display: flex;
+    justify-content: space-between;
+}
+
+.accordion-body {
+    display: none;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #444;
+}
+
+.accordion-item.active .accordion-body {
+    display: block;
+}
+
+.user-bubbles {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.user-bubble {
+    background-color: #708A58;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.user-panel {
+    padding: 20px;
+    background-color: #fff;
+    border-left: 6px solid #708A58;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+    .user-panel h2 {
+        font-size: 1.2rem;
+        color: #2D4F2B;
+        margin-bottom: 15px;
+    }
+
+.seccion-doble {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: space-between;
+}
+
+.tarjetas-encuestas,
+.usuarios-activos {
+    flex: 1 1 48%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border-top: 4px solid #708A58;
+}
+
+.titulo-seccion {
+    font-size: 1.2rem;
+    color: #2D4F2B;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.tarjetas-contenedor {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.tarjeta-encuesta {
+    border: 1px solid #ccc;
+    padding: 16px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    transition: transform 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #2D4F2B;
+    font-weight: 500;
+}
+
+    .tarjeta-encuesta:hover {
+        transform: scale(1.02);
+        background-color: #eef9f1;
+    }
+
+.chips-usuarios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip-usuario {
+    background: #2D4F2B;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+    .chip-usuario span.avatar {
+        background-color: #fff;
+        color: #2D4F2B;
+        font-weight: bold;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+.encuestas-dashboard {
+    padding: 70px 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.encabezado-encuestas {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+    .encabezado-encuestas h1 {
+        font-size: 2rem;
+        color: #1B3A1B;
+        margin: 0;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+.grid-encuestas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+}
+
+.encuesta-card {
+    border-radius: 12px;
+    background: #fff;
+    padding: 22px 24px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-left: 6px solid #4CAF50;
+    transition: box-shadow 0.3s ease;
+    cursor: default;
+}
+
+    .encuesta-card:hover {
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .encuesta-card h3 {
+        margin: 0 0 12px;
+        color: #1B3A1B;
+        font-size: 1.3rem;
+    }
+
+    .encuesta-card small {
+        color: #666;
+        margin-bottom: 14px;
+        font-style: italic;
+    }
+
+.encuesta-acciones {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+}
+
+    .encuesta-acciones a {
+        font-size: 1.4rem;
+        text-decoration: none;
+        color: #1B3A1B;
+        transition: color 0.3s ease, transform 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        background: #E8F5E9;
+        box-shadow: 0 2px 5px rgba(76,175,80,0.3);
+    }
+
+        .encuesta-acciones a:hover {
+            color: white;
+            background-color: #4CAF50;
+            transform: scale(1.15);
+            box-shadow: 0 4px 10px rgba(76,175,80,0.6);
+        }
+
+.btn-agregar-flotante {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 30px;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 14px rgba(76,175,80,0.6);
+    text-decoration: none;
+    z-index: 999;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-agregar-flotante:hover {
+        background-color: #388E3C;
+    }

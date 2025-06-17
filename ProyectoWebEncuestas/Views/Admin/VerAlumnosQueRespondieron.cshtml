@@ -1,85 +1,156 @@
 ﻿@{
     Layout = "_LayoutAdmin";
 }
-<div class="main-content2">
-    <div class="active-users">
-        <h1 >Titulo encuesta</h1>
-        <h4 class="seccion-titulo">Alumnos que respondieron:</h4>
+<main class="respuesta-panel">
+    <section class="panel-encabezado">
+        <h2 class="titulo-encuesta">📋 Resultados de Encuesta</h2>
+        <p class="subtitulo">Lista de alumnos que han respondido la encuesta seleccionada.</p>
+    </section>
 
-        <div class="alumnos-container">
-            <!-- Tarjeta de alumno -->
-            <div class="alumno-card">
-                <div class="alumno-info">
-                   
-                </div>
-                <div class="alumno-acciones">
-                   
-                </div>
-            </div>
-    
-        </div>
-    </div>
-</div>
+    <section class="tabla-alumnos">
+        <table>
+            <thead>
+                <tr>
+                    <th>👤 Nombre</th>
+                    <th>🎓 Número de Control</th>
+                    <th>🔍 Acción</th>
+                </tr>
+            </thead>
+            <tbody class="alumnos-body">
+                <!-- Se llena por JS -->
+            </tbody>
+        </table>
+        <div class="mensaje-vacio" style="display:none;">No hay alumnos que hayan respondido esta encuesta.</div>
+    </section>
+</main>
+
 <script>
     async function mostrarAlumnosQueRespondieron() {
         const params = new URLSearchParams(window.location.search);
         const idEncuesta = params.get("id");
-        const token = localStorage.getItem("token"); 
-
+        const token = localStorage.getItem("token");
 
         if (!idEncuesta) {
-            console.error("No se encontró el ID de la encuesta en la URL.");
+            console.error("Falta el ID de la encuesta en la URL.");
             return;
         }
 
         try {
-           const response = await fetch(`https://encuesta-api.websitos256.com/api/encuestas/${idEncuesta}/alumnos`, {
+            const response = await fetch(`https://encuesta-api.websitos256.com/api/encuestas/${idEncuesta}/alumnos`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
             });
-            if (!response.ok) {
-                throw new Error('Error al obtener la lista de alumnos.');
-            }
+
+            if (!response.ok) throw new Error('Error al obtener los alumnos.');
 
             const alumnos = await response.json();
-            const alumnosContainer = document.querySelector('.alumnos-container');
-            alumnosContainer.innerHTML = ''; 
+            const tbody = document.querySelector(".alumnos-body");
+            const mensajeVacio = document.querySelector(".mensaje-vacio");
+
+            tbody.innerHTML = "";
 
             if (alumnos.length === 0) {
-                alumnosContainer.innerHTML = '<p>No hay alumnos que hayan respondido esta encuesta.</p>';
+                mensajeVacio.style.display = "block";
                 return;
             }
 
+            mensajeVacio.style.display = "none";
+
             alumnos.forEach(alumno => {
-                const alumnoCard = document.createElement('div');
-                alumnoCard.classList.add('alumno-card');
-
-                const alumnoInfo = document.createElement('div');
-                alumnoInfo.classList.add('alumno-info');
-                alumnoInfo.innerHTML = `
-                   <p><strong>Nombre:</strong> ${alumno.nombre}</p>
-                   <p><strong>Número de Control:</strong> ${alumno.numeroControl}</p>
-
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${alumno.nombre}</td>
+                    <td>${alumno.numeroControl}</td>
+                    <td>
+                        <a href="/Admin/VerRespuestasDeAlumno?idEncuesta=${idEncuesta}&idAlumno=${alumno.idAlumno}" class="btn-ver">Ver Respuestas</a>
+                    </td>
                 `;
-
-                const alumnoAcciones = document.createElement('div');
-                alumnoAcciones.classList.add('alumno-acciones');
-                const verRespuestasLink = document.createElement('a');
-                verRespuestasLink.classList.add('btn-primary');
-                verRespuestasLink.href = `/Admin/VerRespuestasDeAlumno?idEncuesta=${idEncuesta}&idAlumno=${alumno.idAlumno}`;
-                verRespuestasLink.textContent = 'Ver Respuestas';
-
-                alumnoAcciones.appendChild(verRespuestasLink);
-                alumnoCard.appendChild(alumnoInfo);
-                alumnoCard.appendChild(alumnoAcciones);
-                alumnosContainer.appendChild(alumnoCard);
+                tbody.appendChild(row);
             });
+
         } catch (error) {
-            console.error('Error al obtener los alumnos que respondieron:', error);
+            console.error("Error al obtener alumnos:", error);
         }
     }
 
-    document.addEventListener('DOMContentLoaded', mostrarAlumnosQueRespondieron);
+    document.addEventListener("DOMContentLoaded", mostrarAlumnosQueRespondieron);
 </script>
+
+<style>
+    body {
+        background: #f4f6f9;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .respuesta-panel {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .panel-encabezado {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .titulo-encuesta {
+        font-size: 2rem;
+        color: #2D3748;
+        margin-bottom: 10px;
+    }
+
+    .subtitulo {
+        color: #718096;
+        font-size: 1rem;
+    }
+
+    .tabla-alumnos table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #ffffff;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .tabla-alumnos th,
+    .tabla-alumnos td {
+        padding: 16px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .tabla-alumnos th {
+        background-color: #f7fafc;
+        font-weight: 600;
+        color: #4A5568;
+    }
+
+    .tabla-alumnos tr:hover {
+        background-color: #edf2f7;
+    }
+
+    .btn-ver {
+        background-color: #3182ce;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+    }
+
+        .btn-ver:hover {
+            background-color: #2b6cb0;
+        }
+
+    .mensaje-vacio {
+        text-align: center;
+        color: #718096;
+        font-style: italic;
+        margin-top: 20px;
+    }
+</style>

@@ -2,30 +2,39 @@
     Layout = "_LayoutAdmin";
 }
 
-<main class="main-content">
-    <section class="form-section">
-        <h2 class="seccion-titulo">Nuevo Usuario</h2>
-        <form class="user-form" id="formAgregarUsuario">
-            <label for="nombre">Nombre de usuario:</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Ingresa el nombre del Usuario" required />
+<main class="registro-usuario-container">
+    <div class="tarjeta-registro">
+        <header class="tarjeta-encabezado">
+            <i data-lucide="user-plus" class="icono"></i>
+            <h2>Registro de Nuevo Usuario</h2>
+        </header>
 
-            <label for="contrasena">Contraseña:</label>
-            <input type="password" id="contrasena" name="contrasena"  required />
+        <form id="formAgregarUsuario" class="formulario-registro">
+            <div class="campo-formulario">
+                <label for="nombre"><i data-lucide="user" class="icono-input"></i> Nombre</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
+            </div>
 
+            <div class="campo-formulario">
+                <label for="contrasena"><i data-lucide="lock" class="icono-input"></i> Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña segura" required>
+            </div>
 
-            <label for="rol">Rol:</label>
-            <select id="rol" name="rol" required>
-                <option value="" disabled selected>Selecciona un rol</option>
-                <option value="Usuario">Usuario</option>
-                <option value="Admin">Admin</option>
-            </select>
+            <div class="campo-formulario">
+                <label for="rol"><i data-lucide="shield" class="icono-input"></i> Rol</label>
+                <select id="rol" name="rol" required>
+                    <option value="" disabled selected>Selecciona un rol</option>
+                    <option value="Usuario">Usuario</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
 
-            <div class="form-buttons">
-                <button type="submit" class="btn-primary">Agregar</button>
-                <button type="button" class="btn-secondary" onclick="window.location.href='/Admin/Usuarios'">Cancelar</button>
+            <div class="acciones-formulario">
+                <button type="submit" class="btn-confirmar"><i data-lucide="check-circle"></i> Registrar</button>
+                <button type="button" class="btn-cancelar" onclick="window.location.href='/Admin/Usuarios'"><i data-lucide="x-circle"></i> Cancelar</button>
             </div>
         </form>
-    </section>
+    </div>
 </main>
 
 <script>
@@ -39,7 +48,7 @@
         const dto = {
             nombre: nombre,
             contrasena: contrasena,
-            esAdmin: rol 
+            esAdmin: rol
         };
 
         try {
@@ -67,4 +76,114 @@
             alert("Error de red. Revisa tu conexión o intenta más tarde.");
         }
     });
+
+    window.addEventListener("DOMContentLoaded", () => lucide.createIcons());
 </script>
+
+<style>
+    .registro-usuario-container {
+        display: flex;
+        justify-content: center;
+        padding: 60px 20px;
+        background: #f8fafc;
+    }
+
+    .tarjeta-registro {
+        background: #ffffff;
+        padding: 35px 30px;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        max-width: 500px;
+        width: 100%;
+    }
+
+    .tarjeta-encabezado {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+        .tarjeta-encabezado h2 {
+            font-size: 1.6rem;
+            color: #2d3748;
+            margin: 0;
+        }
+
+    .formulario-registro .campo-formulario {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .campo-formulario label {
+        margin-bottom: 6px;
+        color: #4a5568;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .campo-formulario input,
+    .campo-formulario select {
+        padding: 10px 12px;
+        border: 1px solid #cbd5e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.2s ease;
+    }
+
+        .campo-formulario input:focus,
+        .campo-formulario select:focus {
+            border-color: #3182ce;
+            outline: none;
+        }
+
+    .acciones-formulario {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .btn-confirmar,
+    .btn-cancelar {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .btn-confirmar {
+        background-color: #38a169;
+        color: #ffffff;
+    }
+
+        .btn-confirmar:hover {
+            background-color: #2f855a;
+        }
+
+    .btn-cancelar {
+        background-color: #e53e3e;
+        color: #ffffff;
+    }
+
+        .btn-cancelar:hover {
+            background-color: #c53030;
+        }
+
+    .icono,
+    .icono-input {
+        width: 20px;
+        height: 20px;
+        color: #4a5568;
+    }
+</style>
