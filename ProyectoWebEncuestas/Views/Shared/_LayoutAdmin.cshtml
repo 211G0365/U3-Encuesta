@@ -8,23 +8,23 @@
 </head>
 <body>
     <header class="header-bar">
-        <h1 class="page-title">Panel de administrador</h1>
+        <h1 class="page-title">Sistema de encuestas<h1>
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     </header>
 
     <div class="menu-modal" id="menuModal">
         <div class="menu-content">
             <div class="menu-header">
-                <div class="user-icon">👤</div>
                 <span class="user-name" id="userName">Usuario</span>
                 <span class="close-menu" onclick="toggleMenu()">×</span>
             </div>
             <div class="menu-links">
-                <a href="/Admin/Index">Inicio</a>
+                <a href="/Admin/Index">Panel central</a>
                 <a href="#" onclick="goToEncuestas()">Encuestas</a>
                 <a href="#" onclick="goToUsuarios()">Usuarios</a>
+                <a href="/Home/Login" class="logout-link">Cerrar sesión</a>
             </div>
-            <a href="/Home/Login" class="logout-link">Cerrar sesión</a>
+   
         </div>
     </div>
     @RenderBody()

@@ -15,7 +15,7 @@
 
         <div class="botones-opciones">
             <button type="button" onclick="addQuestion()">➕ Agregar Pregunta</button>
-            <button type="submit" class="guardar">Guardar Cambios</button>
+            <button type="submit" class="guardar">Editar</button>
             <button type="button" onclick="cancelar()" class="cancelar">Cancelar</button>
         </div>
     </form>
@@ -42,8 +42,7 @@
         div.innerHTML = `
             ${id ? `<input type="hidden" name="questionIds[]" value="${id}" />` : ""}
             <input type="text" name="questions[]" placeholder="Pregunta..." value="${descripcion}" required />
-            <input type="number" name="questionNumbers[]" class="numero" value="${numero}" required min="1" max="10" />
-            <button type="button" onclick="eliminarPregunta(${id}, this)" style="background:#e53e3e;color:#fff;border-radius:6px;padding:8px;">🗑️</button>
+            <button type="button" onclick="eliminarPregunta(${id}, this)" style="background:#e53e3e;color:#fff;border-radius:6px;padding:8px;">ELIMINAR</button>
         `;
 
         container.appendChild(div);

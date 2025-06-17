@@ -12,7 +12,6 @@
         <div id="questionsContainer" class="contenedor-preguntas">
             <div class="pregunta-item">
                 <input type="text" id="question1" name="questions[]" placeholder="Pregunta 1..." required />
-                <input type="text" id="questionNumber1" name="questionNumbers[]" value="1" class="numero" />
             </div>
         </div>
 
@@ -42,12 +41,7 @@
              div.innerHTML = `
           <div class="question-input-wrapper">
             <div class="text-input-group">
-              <label for="question${questionCount}">Pregunta:</label>
-              <input type="text" id="question${questionCount}" name="questions[]" required />
-            </div>
-            <div class="number-input-group">
-              <label for="questionNumber${questionCount}">Número:</label>
-              <input type="text" id="questionNumber${questionCount}" name="questionNumbers[]" value="${questionCount}" required />
+              <input type="text" id="question${questionCount}" name="questions[]" required placeholder="Escriba la siguiente pregunta" />
             </div>
           </div>
         `;
@@ -56,9 +50,8 @@
       }
 
         function cancelar() {
-          if (confirm("¿Deseas cancelar esta encuesta?")) {
             window.history.back();
-          }
+          
         }
 
       document.getElementById("addSurveyForm").addEventListener("submit", function(event){

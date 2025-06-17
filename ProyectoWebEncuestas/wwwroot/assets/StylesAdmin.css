@@ -76,7 +76,6 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 20px 10px 20px;
-    border-bottom: 1px solid #ddd;
 }
 
 .user-info {
@@ -126,7 +125,6 @@
     padding: 12px 20px;
     text-decoration: none;
     color: #333;
-    border-bottom: 1px solid #ddd;
     transition: background-color 0.2s;
 }
 
@@ -166,26 +164,6 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-top: 4px solid #708A58;
-}
-
-.filter-section {
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.filter-label {
-    font-weight: 600;
-    color: #2D4F2B;
-}
-
-/* Input filtro */
-#fechaFiltro {
-    padding: 6px 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 }
 
 .featured-surveys,
@@ -364,12 +342,16 @@
 
             .encuestas-ul li a:hover {
                 color: #2D4F2B;
+                
             }
 
         .encuestas-ul li:last-child {
             border-bottom: none;
         }
 
+.encuesta-card{
+    cursor:pointer;
+}
 /* Botón eliminar y editar usuario */
 .edit-btn,
 .delete-btn {
