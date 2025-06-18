@@ -43,15 +43,12 @@
                 const card = document.createElement("div");
                 card.className = "encuesta-card";
                                 card.style.cursor = "pointer";
-
-                  const fechaISO = new Date(encuesta.fechaCreacion).toISOString().split("T")[0]; // yyyy-mm-dd
-
                   card.innerHTML = `
         <div class="encuesta-card-content">
             <h3>${encuesta.titulo}</h3>
             <div class="encuesta-actions">
-                <a href="/Users/EditarEncuesta?id=${encuesta.id}" class="edit-btn" title="Editar encuesta"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="none" stroke="#2D4F2B" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m5 16l-1 4l4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0zM15 6l3 3m-5 11h8"/></svg></a>
-                <a href="/Users/EliminarEncuesta?id=${encuesta.id}" class="delete-btn" title="Eliminar encuesta"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="#2D4F2B" d="M7 21q-.825 0-1.412-.587T5 19V6q-.425 0-.712-.288T4 5t.288-.712T5 4h4q0-.425.288-.712T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5t-.288.713T19 6v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zm-7 11q.425 0 .713-.288T11 16V9q0-.425-.288-.712T10 8t-.712.288T9 9v7q0 .425.288.713T10 17m4 0q.425 0 .713-.288T15 16V9q0-.425-.288-.712T14 8t-.712.288T13 9v7q0 .425.288.713T14 17M7 6v13z"/></svg></a>
+                <a href="/Encuestador/EditarEncuesta?id=${encuesta.id}" class="edit-btn" title="Editar encuesta"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="none" stroke="#2D4F2B" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m5 16l-1 4l4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0zM15 6l3 3m-5 11h8"/></svg></a>
+                <a href="/Encuestador/EliminarEncuesta?id=${encuesta.id}" class="delete-btn" title="Eliminar encuesta"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><path fill="#2D4F2B" d="M7 21q-.825 0-1.412-.587T5 19V6q-.425 0-.712-.288T4 5t.288-.712T5 4h4q0-.425.288-.712T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5t-.288.713T19 6v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zm-7 11q.425 0 .713-.288T11 16V9q0-.425-.288-.712T10 8t-.712.288T9 9v7q0 .425.288.713T10 17m4 0q.425 0 .713-.288T15 16V9q0-.425-.288-.712T14 8t-.712.288T13 9v7q0 .425.288.713T14 17M7 6v13z"/></svg></a>
             </div>
         </div>
     `;
@@ -78,7 +75,7 @@
 
 
     document.getElementById("btnAgregarEncuesta").addEventListener("click", function () {
-        window.location.href = "/Users/AgregarEncuesta";
+        window.location.href = "/Encuestador/AgregarEncuesta";
     });
 
 </script>
@@ -105,7 +102,6 @@
             box-shadow: 0 4px 24px rgba(44,62,80,0.13);
         }
 
-    /* Contenido de la tarjeta */
     .encuesta-card-content {
         width: 100%;
         display: flex;
@@ -113,7 +109,7 @@
         justify-content: space-between;
     }
 
-    /* Título */
+
     .encuesta-card h3 {
         margin: 0;
         font-size: 1.15rem;
@@ -121,7 +117,7 @@
         font-weight: 600;
     }
 
-    /* Acciones */
+  
     .encuesta-actions {
         display: flex;
         gap: 10px;

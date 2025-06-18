@@ -2,7 +2,7 @@
 
 namespace EncuestasWeb.Controllers
 {
-	public class UsersController : Controller
+	public class EncuestadorController : Controller
 	{
 		public IActionResult Index()
 		{

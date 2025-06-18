@@ -89,7 +89,6 @@
 
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
-
         const titulo = document.getElementById("surveyName").value;
         const descs = document.getElementsByName("questions[]");
         const nums = document.getElementsByName("questionNumbers[]");
@@ -118,7 +117,7 @@
             if (!res.ok) throw new Error(await res.text());
 
             alert("Encuesta actualizada exitosamente.");
-            window.location.href = "/Users/VerMisEncuestas";
+            window.location.href = "/Encuestador/VerMisEncuestas";
         } catch (err) {
             alert("Error al actualizar encuesta: " + err.message);
         }
@@ -150,7 +149,7 @@
         } catch (err) {
             console.error("Error:", err);
             alert("Error al cargar la encuesta.");
-            window.location.href = "/Users/VerMisEncuestas";
+            window.location.href = "/Encuestador/VerMisEncuestas";
         }
     });
 </script>

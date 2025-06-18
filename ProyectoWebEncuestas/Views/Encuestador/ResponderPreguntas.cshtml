@@ -32,7 +32,7 @@
 
         if (!encuestaId || !idRespuesta || !token || !nombreAlumno) {
             alert("Datos de sesión incompletos.");
-            window.location.href = "/Users/Index";
+            window.location.href = "/Encuestador/Index";
             return;
         }
 
@@ -73,7 +73,7 @@
             localStorage.removeItem("nombreAlumno");
 
             if (connection) await connection.stop();
-            window.location.href = "/Users/Index";
+            window.location.href = "/Encuestador/Index";
         } catch (err) {
             console.error(err);
             alert("Error al cancelar la encuesta: " + err.message);
@@ -188,7 +188,7 @@
             localStorage.removeItem("nombreAlumno");
 
             if (connection) await connection.stop();
-            window.location.href = "/Users/Index";
+            window.location.href = "/Encuestador/Index";
         } catch (err) {
             console.error(err);
             alert("Hubo un problema al enviar las respuestas: " + err.message);

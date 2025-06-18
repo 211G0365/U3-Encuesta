@@ -19,7 +19,7 @@
                 <span class="close-menu" onclick="toggleMenu()">☰</span>
             </div>
             <div class="menu-links">
-                <a href="/Users/Index">Otras Encuestas</a>
+                <a href="/Encuestador/Index">Otras Encuestas</a>
                 <a href="#" onclick="goToMisEncuestas()">Mis Encuestas</a>
                 <a href="/Home/Login" class="logout-link">Cerrar sesión</a>
 
@@ -42,7 +42,7 @@
                 alert("No se encontró el ID del usuario");
                 return;
             }
-            window.location.href = `/Users/VerMisEncuestas`;
+            window.location.href = `/Encuestador/VerMisEncuestas`;
         }
 
         window.addEventListener('DOMContentLoaded', () => {
