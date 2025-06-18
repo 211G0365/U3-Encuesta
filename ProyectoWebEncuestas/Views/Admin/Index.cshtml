@@ -2,6 +2,36 @@
     Layout = "_LayoutAdmin";
 }
 
+<style>
+    /* Contenedor para las dos secciones lado a lado con wrap */
+    .seccion-doble {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 2rem;
+    }
+
+    /* Respuestas: ocupa más espacio */
+    .tarjetas-encuestas {
+        flex: 2 1 600px; /* Crece más, base mínimo 600px */
+        background: #f9f9f9;
+        padding: 1rem;
+        border-radius: 6px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    /* Usuarios: menos ancho */
+    .usuarios-activos {
+        flex: 1 1 250px; /* Crece menos, base mínimo 250px */
+        background: #fff;
+        padding: 1rem;
+        border-radius: 6px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        height: fit-content;
+    }
+
+   
+</style>
 
 <main class="dashboard-alt">
 
@@ -73,7 +103,7 @@
         }
     }
 
-      async function cargarEncuestasConRespuestas() {
+    async function cargarEncuestasConRespuestas() {
         try {
             const res = await fetch(`${baseApiUrl}/api/encuestas/EncuestaConTotalRespuestas`, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -102,7 +132,7 @@
         }
     }
 
-     function renderizarUsuariosActivos(lista) {
+    function renderizarUsuariosActivos(lista) {
         const contenedor = document.getElementById("lista-usuarios");
         contenedor.innerHTML = lista.length
             ? lista.map(nombre => {
@@ -115,7 +145,6 @@
     function cargarTodo() {
         fetchStat("/api/encuestas/totalrespondidas", "stat-respondidas");
         fetchStat("/api/encuestas/totalnorespondidas", "stat-pendientes");
-        fetchStat("/api/encuestas/promedioRespuestasPorEncuesta", "stat-promedio");
         fetchStat("/api/encuestas/totalAlumnosEntrevistados", "stat-entrevistados");
         cargarEncuestasConRespuestas();
     }

@@ -1304,3 +1304,18 @@ input[type="text"] {
     .btn-agregar:hover {
         background-color: #2c6cb0;
     }
+
+.tarjeta-encuesta {
+    cursor: pointer;
+}
+/* Responsivo */
+@media (max-width: 720px) {
+    .seccion-doble {
+        flex-direction: column;
+    }
+
+    .tarjetas-encuestas, .usuarios-activos {
+        flex: none;
+        width: 100%;
+    }
+}

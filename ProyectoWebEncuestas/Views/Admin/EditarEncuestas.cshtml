@@ -42,6 +42,7 @@
         div.innerHTML = `
             ${id ? `<input type="hidden" name="questionIds[]" value="${id}" />` : ""}
             <input type="text" name="questions[]" placeholder="Pregunta..." value="${descripcion}" required />
+            <input type="hidden" name="questionNumbers[]" value="${numero}" />
             <button type="button" onclick="eliminarPregunta(${id}, this)" style="background:#e53e3e;color:#fff;border-radius:6px;padding:8px;">ELIMINAR</button>
         `;
 
@@ -211,7 +212,7 @@
 
     .pregunta-item {
         display: grid;
-        grid-template-columns: 1fr 80px 50px;
+        grid-template-columns: 1fr 80px;
         gap: 10px;
         align-items: center;
     }

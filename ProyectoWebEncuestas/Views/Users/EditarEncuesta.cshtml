@@ -1,165 +1,112 @@
 ﻿@{
     Layout = "_Layout";
 }
-<main class="container">
-    <form id="editSurveyForm">
-        <div class="form-group">
-            <label for="surveyName">Nombre de la encuesta:</label>
-            <input type="text" id="surveyName" name="surveyName" required />
+
+<main class="crear-encuesta-wrapper">
+    <h1 class="crear-encuesta-titulo">Editar Encuesta</h1>
+
+    <form id="editSurveyForm" class="crear-encuesta-formulario">
+        <label for="surveyName">Título de la encuesta</label>
+        <input type="text" id="surveyName" name="surveyName" required />
+
+        <div id="questionsContainer" class="contenedor-preguntas">
+            <!-- Las preguntas se cargan por JS -->
         </div>
 
-        <div id="questionsContainer">
-        </div>
-        <div class="button-group">
-            <button type="button" id="btnAddQuestion" class="btn-add" onclick="addQuestion()">Agregar otra pregunta</button>
-        </div>
-
-        <div class="button-group">
-            <button type="submit" class="submit-button">Guardar cambios</button>
-            <button type="button" class="cancel-button" onclick="cancelar()">Cancelar</button>
+        <div class="botones-opciones">
+            <button type="button" onclick="addQuestion()">➕ Agregar Pregunta</button>
+            <button type="submit" class="guardar">Editar</button>
+            <button type="button" onclick="cancelar()" class="cancelar">Cancelar</button>
         </div>
     </form>
 </main>
 
 <script>
-      let questionCount = 0;
-      const maxQuestions = 10;
+    let questionCount = 0;
+    const maxQuestions = 10;
+    const token = localStorage.getItem("token");
 
-
-        function actualizarEstadoBoton() {
-        const btn = document.getElementById("btnAddQuestion");
+    function addQuestion(descripcion = "", numero = questionCount + 1, id = 0) {
         if (questionCount >= maxQuestions) {
-            btn.disabled = true;
-            btn.style.backgroundColor = "gray";
-        } else {
-            btn.disabled = false;
-            btn.style.backgroundColor = "";
-        }
-    }
-
-
-      // Función para agregar nuevas preguntas
-      function addQuestion() {
-       if (questionCount >= maxQuestions) {
             alert("Solo se permiten hasta 10 preguntas.");
             return;
         }
+
         questionCount++;
 
         const container = document.getElementById("questionsContainer");
         const div = document.createElement("div");
-        div.className = "form-group question-item" ;
+        div.className = "pregunta-item question-item";
+        if (id) div.dataset.id = id;
 
-           div.innerHTML = `
-        <div class="question-input-wrapper">
-          <div class="text-input-group">
-            <label for="question${questionCount}">Pregunta:</label>
-            <input type="text" id="question${questionCount}" name="questions[]" required />
-          </div>
-          <div class="number-input-group">
-            <label for="questionNumber${questionCount}">Número:</label>
-            <input type="text" id="questionNumber${questionCount}" name="questionNumbers[]" value="${questionCount}" required />
-          </div>
-          <button type="button" class="delete-buttonn" onclick="eliminarPregunta(0, this)">🗑️</button>
+        div.innerHTML = `
+            ${id ? `<input type="hidden" name="questionIds[]" value="${id}" />` : ""}
+            <input type="text" name="questions[]" placeholder="Pregunta..." value="${descripcion}" required />
+            <input type="hidden" name="questionNumbers[]" value="${numero}" />
+            <button type="button" onclick="eliminarPregunta(${id}, this)" style="background:#e53e3e;color:#fff;border-radius:6px;padding:8px;">ELIMINAR</button>
+        `;
 
-        </div>
-      `;
-
-      container.appendChild(div);
-        actualizarEstadoBoton();   // Deshabilitar el botón si ya se alcanzó el máximo
-
-
+        container.appendChild(div);
     }
 
-
-    document.addEventListener("DOMContentLoaded", async function () {
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get("id");
-        const token = localStorage.getItem("token");
-
-        if (!id || !token) {
-            alert("Token o ID de encuesta no encontrado.");
-            window.location.href = "/Login";
+    async function eliminarPregunta(id, button) {
+        if (!id || id === 0) {
+            button.closest(".question-item").remove();
+            questionCount--;
             return;
         }
 
+        if (!confirm("¿Estás seguro de eliminar esta pregunta?")) return;
+
         try {
-            const res = await fetch(`https://localhost:7297/api/encuestas/con-preguntas/${id}`, {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+            const res = await fetch(`https://encuesta-api.websitos256.com/api/encuestas/preguntas/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` }
             });
 
             if (!res.ok) {
-                const errorText = await res.text();
-                throw new Error(`(${res.status}) ${errorText}`);
+                const err = await res.text();
+                alert(`Error al eliminar: ${err}`);
+                return;
             }
 
-            const encuesta = await res.json();
-            document.getElementById("surveyName").value = encuesta.titulo;
-
-            const container = document.getElementById("questionsContainer");
-            container.innerHTML = "";
-
-            encuesta.pregunta.forEach((p, i) => {
-                const div = document.createElement("div");
-                div.className = "form-group question-item";
-                div.dataset.id = p.id;
-                div.innerHTML = `
-                    <input type="hidden" name="questionIds[]" value="${p.id}" />
-                    <div class="question-input-wrapper">
-                        <div class="text-input-group">
-                            <label>Pregunta:</label>
-                            <input type="text" name="questions[]" value="${p.descripcion}" required />
-                        </div>
-                        <div class="number-input-group">
-                            <label>Número:</label>
-                            <input type="number" name="questionNumbers[]" value="${p.numeroPregunta}" required min="1" max="10" />
-                        </div>
-                        <button type="button" class="delete-buttonn" onclick="eliminarPregunta(${p.id}, this)">🗑️</button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-
-            questionCount = encuesta.pregunta.length;
-            actualizarEstadoBoton();
-
-        } catch (err) {
-            console.error("Error al cargar encuesta:", err.message);
-            alert("Error al cargar la encuesta: " + err.message);
-            window.location.href = "/Users/Index";
+            alert("Pregunta eliminada.");
+            button.closest(".question-item").remove();
+            questionCount--;
+        } catch (e) {
+            console.error("Error al eliminar pregunta:", e);
+            alert("Error de red.");
         }
-    });
+    }
 
-        document.getElementById("editSurveyForm").addEventListener("submit", async function (e) {
+    function cancelar() {
+        if (confirm("¿Deseas cancelar la edición?")) {
+            window.history.back();
+        }
+    }
+
+    document.getElementById("editSurveyForm").addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
-        const token = localStorage.getItem("token");
 
         const titulo = document.getElementById("surveyName").value;
-        const questionDescs = document.getElementsByName("questions[]");
-        const questionNumbers = document.getElementsByName("questionNumbers[]");
-        const questionIds = document.getElementsByName("questionIds[]");
+        const descs = document.getElementsByName("questions[]");
+        const nums = document.getElementsByName("questionNumbers[]");
+        const ids = document.getElementsByName("questionIds[]");
 
         const preguntas = [];
-        for (let i = 0; i < questionDescs.length; i++) {
+        for (let i = 0; i < descs.length; i++) {
             preguntas.push({
-                id: questionIds[i]?.value ? parseInt(questionIds[i].value) : 0,
-                descripcion: questionDescs[i].value,
-                numeroPregunta: parseInt(questionNumbers[i].value)
+                id: ids[i]?.value ? parseInt(ids[i].value) : 0,
+                descripcion: descs[i].value,
+                numeroPregunta: parseInt(nums[i].value)
             });
         }
 
         try {
-
-        const payload = {
-            titulo: titulo,
-            preguntas: preguntas
-        };
-
+            const payload = { titulo: titulo, preguntas: preguntas };
             const res = await fetch(`https://encuesta-api.websitos256.com/api/encuestas/${id}`, {
                 method: "PUT",
                 headers: {
@@ -169,71 +116,151 @@
                 body: JSON.stringify(payload)
             });
 
-            if (!res.ok) {
-                const errorText = await res.text();
-                throw new Error(`(${res.status}) ${errorText}`);
-            }
+            if (!res.ok) throw new Error(await res.text());
 
-            alert("Encuesta actualizada correctamente.");
-            window.location.href = "/Users/Index";
+            alert("Encuesta actualizada exitosamente.");
+            window.location.href = "/Users/VerMisEncuestas";
         } catch (err) {
-            console.error("Error al actualizar encuesta:", err.message);
             alert("Error al actualizar encuesta: " + err.message);
         }
     });
 
-      function cancelar() {
-        if (confirm("¿Deseas cancelar esta encuesta?")) {
-          window.history.back();
-        }
-      }
+    document.addEventListener("DOMContentLoaded", async function () {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
 
-        async function eliminarPregunta(id, button) {
-        if (!id || id === 0) {
-            // Pregunta nueva que no está en BD aún, solo eliminar del DOM
-            const item = button.closest(".question-item");
-            if (item) item.remove();
-            questionCount--;
-            actualizarEstadoBoton();
-            return;
-        }
-
-        if (!confirm("¿Estás seguro de eliminar esta pregunta?")) return;
-
-        const token = localStorage.getItem("token");
-        if (!token) {
-            alert("No se encontró token de autorización.");
-            return;
+        if (!id || !token) {
+            alert("Faltan datos para editar.");
+            return window.location.href = "/Login";
         }
 
         try {
-            const resDel = await fetch(`https://encuesta-api.websitos256.com/api/encuestas/preguntas/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+            const res = await fetch(`https://encuesta-api.websitos256.com/api/encuestas/con-preguntas/${id}`, {
+                headers: { "Authorization": `Bearer ${token}` }
             });
 
-            if (!resDel.ok) {
-                const errorText = await resDel.text();
-                alert(`Error al eliminar pregunta: (${resDel.status}) ${errorText}`);
-                return;
-            }
+            if (!res.ok) throw new Error(await res.text());
 
-            alert("Pregunta eliminada correctamente.");
+            const data = await res.json();
+            document.getElementById("surveyName").value = data.titulo;
 
-            // Eliminar visualmente
-            const item = button.closest(".question-item");
-            if (item) item.remove();
+            data.pregunta.forEach(p => {
+                addQuestion(p.descripcion, p.numeroPregunta, p.id);
+            });
 
-            questionCount--;
-            actualizarEstadoBoton();
-
-        } catch (error) {
-            console.error("Error al eliminar pregunta:", error);
-            alert("Error de red al eliminar la pregunta.");
+        } catch (err) {
+            console.error("Error:", err);
+            alert("Error al cargar la encuesta.");
+            window.location.href = "/Users/VerMisEncuestas";
         }
+    });
+</script>
+
+<style>
+    body {
+        background-color: #F9FAFB;
+        font-family: 'Segoe UI', sans-serif;
     }
 
+    .crear-encuesta-wrapper {
+        max-width: 700px;
+        margin: 60px auto;
+        padding: 20px;
+    }
 
-</script>
+    .crear-encuesta-titulo {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        color: #2D3748;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #E2E8F0;
+        padding-bottom: 10px;
+    }
+
+    .crear-encuesta-formulario {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    label {
+        font-weight: 600;
+        color: #4A5568;
+    }
+
+    input[type="text"], input[type="number"] {
+        padding: 12px;
+        border: 1px solid #CBD5E0;
+        border-radius: 6px;
+        font-size: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #3182CE;
+    }
+
+    .contenedor-preguntas {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .pregunta-item {
+        display: grid;
+        grid-template-columns: 1fr 80px;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .numero {
+        text-align: center;
+    }
+
+    .botones-opciones {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+    }
+
+        .botones-opciones button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .botones-opciones .guardar {
+            background-color: #38A169;
+            color: white;
+        }
+
+            .botones-opciones .guardar:hover {
+                background-color: #2F855A;
+            }
+
+        .botones-opciones .cancelar {
+            background-color: #E53E3E;
+            color: white;
+        }
+
+            .botones-opciones .cancelar:hover {
+                background-color: #C53030;
+            }
+
+        .botones-opciones button:not(.guardar):not(.cancelar) {
+            background-color: #4299E1;
+            color: white;
+        }
+
+            .botones-opciones button:not(.guardar):not(.cancelar):hover {
+                background-color: #3182CE;
+            }
+</style>
