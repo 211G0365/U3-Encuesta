@@ -104,7 +104,7 @@
               const errorMsg = await response.text();
 
               if (errorMsg.includes("ya ha respondido")) {
-                alert("Este alumno ya ha respondido esta encuesta. Redirigiendo al inicio.");
+                alert("Ya hay una respuesta registrada de este alumno");
                 localStorage.removeItem("idRespuesta");
                 window.location.href = "/Encuestador/Index";
               } else {
