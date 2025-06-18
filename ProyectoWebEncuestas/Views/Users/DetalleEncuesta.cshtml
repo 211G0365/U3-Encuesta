@@ -79,7 +79,7 @@
       const formAlumno = document.getElementById("form-alumno");
       if (formAlumno) {
         document.getElementById("btn-siguiente").addEventListener("click", async function (e) {
-          e.preventDefault(); // evitar comportamiento por defecto del enlace
+          e.preventDefault();
 
           const nombre = document.getElementById("nombreAlumno").value.trim();
           const numeroControl = document.getElementById("numeroControl").value.trim();
@@ -146,5 +146,7 @@
     });
 </script>
 <style>
-    
+    .btn-primary, .cancel-button{
+        width:80px;
+    }
 </style>

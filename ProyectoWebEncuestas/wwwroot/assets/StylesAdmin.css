@@ -158,7 +158,6 @@
 
 .contenedor-encuestas {
     max-width: 960px;
-    margin: 60px auto 40px;
     padding: 20px;
 }
 
@@ -1317,5 +1316,79 @@ input[type="text"] {
     .tarjetas-encuestas, .usuarios-activos {
         flex: none;
         width: 100%;
+    }
+}
+
+@media (max-width: 700px) {
+    .survey-form {
+        max-width: 98vw;
+        padding: 0 2vw 40px 2vw;
+    }
+
+    .survey-title {
+        font-size: 1.5rem;
+        margin: 20px 0 20px 10px;
+    }
+
+    .question-item {
+        padding: 18px 4px 12px 4px;
+    }
+
+    .rating-options {
+        padding: 0 2px;
+        gap: 0;
+    }
+
+    .scale-label {
+        font-size: 0.92rem;
+        min-width: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .survey-title {
+        font-size: 1.1rem;
+        margin: 12px 0 12px 4px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .submit-button, .cancel-button {
+        width: 100%;
+        font-size: 1rem;
+        padding: 10px 0;
+    }
+
+    .rating-options {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .rating-label {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        min-width: unset;
+        margin-bottom: 8px;
+    }
+
+    .custom-radio {
+        margin-bottom: 0;
+        margin-right: 8px;
+    }
+
+    .scale-label {
+        margin-top: 0;
+        margin-left: 8px;
+        text-align: left;
+    }
+
+    .rating-options::before {
+        display: none;
     }
 }

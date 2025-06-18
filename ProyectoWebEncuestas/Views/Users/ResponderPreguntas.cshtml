@@ -5,13 +5,7 @@
 <main class="container">
     <form id="surveyForm">
 
-        <div class="rating-labels">
-            <span class="label-opcion uno">Muy malo (1)</span>
-            <span class="label-opcion dos">Malo (2)</span>
-            <span class="label-opcion tres">Regular (3)</span>
-            <span class="label-opcion cuatro">Bueno (4)</span>
-            <span class="label-opcion cinco">Excelente (5)</span>
-        </div>
+        <p>Siendo 5 Muy Bueno, 4 Bueno, 3 Neutro, 2 Malo, 1 Muy malo</p>
 
         <div class="questions-list" id="questionsContainer">
             <div class="question-item">
@@ -190,8 +184,6 @@
             });
 
             if (!res.ok) throw new Error("Error al guardar respuestas.");
-
-            alert("¡Gracias por responder!");
             localStorage.removeItem("idRespuesta");
             localStorage.removeItem("nombreAlumno");
 
@@ -203,3 +195,10 @@
         }
     }
 </script>
+<style>
+    .container
+    {
+        margin:10px;
+        margin-top:50PX;
+    }
+</style>

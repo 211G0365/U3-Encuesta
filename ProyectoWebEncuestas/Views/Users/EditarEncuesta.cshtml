@@ -10,7 +10,6 @@
         <input type="text" id="surveyName" name="surveyName" required />
 
         <div id="questionsContainer" class="contenedor-preguntas">
-            <!-- Las preguntas se cargan por JS -->
         </div>
 
         <div class="botones-opciones">
@@ -80,9 +79,9 @@
     }
 
     function cancelar() {
-        if (confirm("¿Deseas cancelar la edición?")) {
+      
             window.history.back();
-        }
+     
     }
 
     document.getElementById("editSurveyForm").addEventListener("submit", async function (e) {
