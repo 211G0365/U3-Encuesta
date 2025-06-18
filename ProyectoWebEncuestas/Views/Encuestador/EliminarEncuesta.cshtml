@@ -4,11 +4,10 @@
 
 <main class="container">
     <div class="form-group">
-        <p>Encuesta:</p>
-        <p class="survey-name-highlight" id="nombreEncuesta"></p>
+        <p class="titulo">Eliminar la encuesta:</p>
+        <p class="encuesta-nombre" id="nombreEncuesta"></p>
     </div>
 
-    <p class="warning-text">¿Estás seguro de que deseas eliminar esta encuesta? Esta acción no se puede deshacer.</p>
 
     <div class="button-group">
         <button class="submit-button" onclick="confirmarEliminacion()">Eliminar</button>
@@ -40,7 +39,7 @@
     };
 
     function confirmarEliminacion() {
-        if (confirm("¿Realmente deseas eliminar esta encuesta?")) {
+   
             fetch(`https://encuesta-api.websitos256.com/api/encuestas/${encuestaId}`, {
                 method: 'DELETE',
                 headers: {
@@ -52,17 +51,27 @@
                 if (!response.ok) {
                     return response.text().then(text => { throw new Error(text); });
                 }
-                alert("Encuesta eliminada correctamente.");
-                window.location.href = "/Encuestador/Index";
+           
+                window.location.href = "/Encuestador/MisEncuestas";
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert(`Ocurrió un error al eliminar la encuesta: ${error.message}`);
             });
-        }
+        
     }
 
     function cancelar() {
         window.history.back();
     }
 </script>
+
+                    <style>
+                        .titulo{
+                            margin-top:60px;
+                        }
+
+                        .encuesta-nombre{
+                            font-size:20px;
+                        }
+                    </style>

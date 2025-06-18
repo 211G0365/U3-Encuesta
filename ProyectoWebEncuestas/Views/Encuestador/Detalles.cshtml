@@ -121,7 +121,7 @@
 
             localStorage.setItem("idRespuesta", idRespuesta);
             localStorage.setItem("nombreAlumno", nombre);
-            window.location.href = `/Encuestador/ResponderPreguntas?id=${encuestaId}`;
+            window.location.href = `/Encuestador/AplicarEncuesta?id=${encuestaId}`;
           } catch (error) {
             alert(error.message);
           }

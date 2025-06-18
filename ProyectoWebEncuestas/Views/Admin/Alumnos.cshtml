@@ -17,7 +17,6 @@
                 </tr>
             </thead>
             <tbody class="alumnos-body">
-                <!-- Se llena por JS -->
             </tbody>
         </table>
         <div class="mensaje-vacio" style="display:none;">No hay alumnos que hayan respondido esta encuesta.</div>
@@ -64,7 +63,7 @@
                     <td>${alumno.nombre}</td>
                     <td>${alumno.numeroControl}</td>
                     <td>
-                        <a href="/Admin/VerRespuestasDeAlumno?idEncuesta=${idEncuesta}&idAlumno=${alumno.idAlumno}" class="btn-ver">Ver Respuestas</a>
+                        <a href="/Admin/Respuestas?idEncuesta=${idEncuesta}&idAlumno=${alumno.idAlumno}" class="btn-ver">Ver Respuestas</a>
                     </td>
                 `;
                 tbody.appendChild(row);

@@ -56,7 +56,7 @@
     }
 
     async function eliminarUsuario(id) {
-        if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
+        if (!confirm("¿Está seguro de eliminar el usuario?")) return;
 
         try {
             const token = localStorage.getItem("token");

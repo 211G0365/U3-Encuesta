@@ -4,7 +4,6 @@
     background-color: #f8f9fa;
 }
 
-/* Barra superior */
 .header-bar {
     position: fixed;
     top: 0;
@@ -36,7 +35,6 @@
     cursor: pointer;
 }
 
-/* Menú modal */
 .menu-modal {
     display: none;
     position: fixed;
@@ -143,7 +141,6 @@
     }
 }
 
-/* Contenido principal */
 .main-content {
     padding: 0px 10px 10px;
     max-width: 1000px;
@@ -180,7 +177,6 @@
         padding-bottom: 5px;
     }
 
-/* Lista de encuestas */
 .survey-list {
     display: flex;
     flex-direction: column;
@@ -231,7 +227,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Tarjetas de estadísticas */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -352,7 +347,6 @@
 .encuesta-card{
     cursor:pointer;
 }
-/* Botón eliminar y editar usuario */
 .edit-btn,
 .delete-btn {
     background: none;
@@ -388,7 +382,6 @@
         background-color: #2D4F2B;
     }
 
-/* Alinear correctamente el contenido de la lista de usuarios */
 .user-list li {
     display: flex;
     align-items: center;
@@ -396,30 +389,8 @@
     justify-content: space-between;
 }
 
-/* Botón flotante para agregar */
-.fab-add-user {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #708A58;
-    color: white;
-    border: none;
-    font-size: 2rem;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    z-index: 1200;
-    transition: background-color 0.3s, transform 0.2s;
-}
 
-    .fab-add-user:hover {
-        background-color: #2D4F2B;
-        transform: scale(1.05);
-    }
 
-/* Formulario nuevo usuario */
 .form-section {
     background-color: white;
     padding: 20px;
@@ -708,7 +679,6 @@
         background-color: #bd2130;
     }
 
-/*Parte de agregar encuestas en admin*/
 .form-group {
     font-weight: 600;
     margin-bottom: 16px;
@@ -829,7 +799,6 @@ input[type="text"] {
         background-color: #2D4F2B;
     }
 
-/*Eliminar encuestas admin*/
 .container .warning-text p {
     color: #d9534f;
     font-weight: bold;
@@ -837,7 +806,6 @@ input[type="text"] {
     margin: 0;
 }
 
-/* Responsivo */
 @media (max-width: 600px) {
     .header-bar {
         flex-direction: row;
@@ -1003,7 +971,6 @@ input[type="text"] {
         gap: 12px;
     }
 
-    /* Ajustes responsivos para tarjetas de encuestas */
     .encuestas-dashboard {
         padding: 20px 15px;
     }
@@ -1113,7 +1080,6 @@ input[type="text"] {
 .user-panel {
     padding: 20px;
     background-color: #fff;
-    border-left: 6px solid #708A58;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
@@ -1138,7 +1104,6 @@ input[type="text"] {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    border-top: 4px solid #708A58;
 }
 
 .titulo-seccion {

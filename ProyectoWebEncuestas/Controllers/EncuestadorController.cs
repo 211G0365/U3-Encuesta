@@ -9,7 +9,7 @@ namespace EncuestasWeb.Controllers
 			return View();
 		}
 
-		public IActionResult VerMisEncuestas()
+		public IActionResult MisEncuestas()
 		{
 			return View();
 		}
@@ -24,15 +24,15 @@ namespace EncuestasWeb.Controllers
 		{
 			return View();
 		}
-		public IActionResult DetalleEncuesta()
+		public IActionResult Detalles()
 		{
 			return View();
 		}
-		public IActionResult AgregarRespuestaAlumno()
+		public IActionResult AgregarRespuestas()
 		{
 			return View();
 		}
-		public IActionResult ResponderPreguntas()
+		public IActionResult AplicarEncuesta()
 		{
 			return View();
 		}

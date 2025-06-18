@@ -115,9 +115,7 @@
             });
 
             if (!res.ok) throw new Error(await res.text());
-
-            alert("Encuesta actualizada exitosamente.");
-            window.location.href = "/Encuestador/VerMisEncuestas";
+            window.location.href = "/Encuestador/MisEncuestas";
         } catch (err) {
             alert("Error al actualizar encuesta: " + err.message);
         }
@@ -149,7 +147,7 @@
         } catch (err) {
             console.error("Error:", err);
             alert("Error al cargar la encuesta.");
-            window.location.href = "/Encuestador/VerMisEncuestas";
+            window.location.href = "/Encuestador/MisEncuestas";
         }
     });
 </script>

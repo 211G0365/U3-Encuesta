@@ -9,7 +9,7 @@ namespace EncuestasWeb.Controllers
 		{
 			return View();
 		}
-		public IActionResult DetalleEncuestas()
+		public IActionResult Detalles()
 		{
 			return View();
 		}
@@ -17,15 +17,15 @@ namespace EncuestasWeb.Controllers
 		{
 			return View();
 		}
-		public IActionResult AgregarEncuestas()
+		public IActionResult AgregarEncuesta()
 		{
 			return View();
 		}
-		public IActionResult EditarEncuestas()
+		public IActionResult EditarEncuesta()
 		{
 			return View();
 		}
-		public IActionResult EliminarEncuestas()
+		public IActionResult EliminarEncuesta()
 		{
 			return View();
 		}
@@ -42,11 +42,11 @@ namespace EncuestasWeb.Controllers
 			return View();
 		}
 
-		public IActionResult VerAlumnosQueRespondieron()
+		public IActionResult Alumnos()
 		{
 			return View();
 		}
-		public IActionResult VerRespuestasDeAlumno()
+		public IActionResult Respuestas()
 		{
 			return View();
 		}

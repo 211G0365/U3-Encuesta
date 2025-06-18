@@ -5,7 +5,7 @@
 <main class="encuestas-dashboard">
     <div class="encabezado-encuestas">
         <h1>Gestor de Encuestas</h1>
-         <button id="btnAgregarEncuesta" class="btn-agregar" href="/Admin/AgregarEncuestas" aria-label="Agregar nueva encuesta">➕ Nueva Encuesta</button>
+         <button id="btnAgregarEncuesta" class="btn-agregar" href="/Admin/AgregarEncuesta" aria-label="Agregar nueva encuesta">➕ Nueva Encuesta</button>
 
     </div>
 
@@ -67,13 +67,13 @@
                     <h3>${encuesta.titulo}</h3>
                 </div>
                 <div class="encuesta-acciones" role="group" aria-label="Acciones encuesta">
-                    <a href="/Admin/EditarEncuestas?id=${encuesta.id}" title="Editar encuesta" aria-label="Editar encuesta ${encuesta.titulo}"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path fill="none" stroke="#2D4F2B" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m5 16l-1 4l4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0zM15 6l3 3m-5 11h8"/></svg></a>
-                    <a href="/Admin/EliminarEncuestas?id=${encuesta.id}" title="Eliminar encuesta" aria-label="Eliminar encuesta ${encuesta.titulo}"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path fill="#2D4F2B" d="M7 21q-.825 0-1.412-.587T5 19V6q-.425 0-.712-.288T4 5t.288-.712T5 4h4q0-.425.288-.712T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5t-.288.713T19 6v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zm-7 11q.425 0 .713-.288T11 16V9q0-.425-.288-.712T10 8t-.712.288T9 9v7q0 .425.288.713T10 17m4 0q.425 0 .713-.288T15 16V9q0-.425-.288-.712T14 8t-.712.288T13 9v7q0 .425.288.713T14 17M7 6v13z"/></svg></a>
+                    <a href="/Admin/EditarEncuesta?id=${encuesta.id}" title="Editar encuesta" aria-label="Editar encuesta ${encuesta.titulo}"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path fill="none" stroke="#2D4F2B" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m5 16l-1 4l4-1L19.586 7.414a2 2 0 0 0 0-2.828l-.172-.172a2 2 0 0 0-2.828 0zM15 6l3 3m-5 11h8"/></svg></a>
+                    <a href="/Admin/EliminarEncuesta?id=${encuesta.id}" title="Eliminar encuesta" aria-label="Eliminar encuesta ${encuesta.titulo}"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path fill="#2D4F2B" d="M7 21q-.825 0-1.412-.587T5 19V6q-.425 0-.712-.288T4 5t.288-.712T5 4h4q0-.425.288-.712T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5t-.288.713T19 6v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zm-7 11q.425 0 .713-.288T11 16V9q0-.425-.288-.712T10 8t-.712.288T9 9v7q0 .425.288.713T10 17m4 0q.425 0 .713-.288T15 16V9q0-.425-.288-.712T14 8t-.712.288T13 9v7q0 .425.288.713T14 17M7 6v13z"/></svg></a>
               
                 </div>
             `;
               div.addEventListener("click", function () {
-                   window.location.href = `/Admin/VerAlumnosQueRespondieron?id=${encuesta.id}`;
+                   window.location.href = `/Admin/Alumnos?id=${encuesta.id}`;
               });
 
               div.querySelectorAll(".encuesta-acciones a").forEach(a => {
@@ -86,8 +86,8 @@
     }
 
     document.getElementById("btnAgregarEncuesta").addEventListener("click", function() {
-        window.location.href = "/Admin/AgregarEncuestas";
+        window.location.href = "/Admin/AgregarEncuesta";
     });
 
-    cargarEncuestas(); // <--- Aquí llamas a la función al cargar la vista
+    cargarEncuestas(); 
 </script>

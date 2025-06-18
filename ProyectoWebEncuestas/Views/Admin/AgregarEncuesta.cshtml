@@ -57,7 +57,6 @@
 
               const titulo = document.getElementById("surveyName").value;
               const questionsInputs = document.querySelectorAll('input[name="questions[]"]');
-              const numbersInputs = document.querySelectorAll('input[name="questionNumbers[]"]');
 
               const preguntas = [];
 
@@ -103,42 +102,3 @@
   
 
   </script>
-@* <script>
-    const token = localStorage.getItem("token");
-    let questionCount = 1;
-
-    // Función para agregar nuevas preguntas
-    function addQuestion() {
-        if (questionCount >= 10) {
-            alert("Solo se permiten hasta 10 preguntas.");
-            return;
-        }
-        questionCount++;
-
-        const container = document.getElementById("questionsContainer");
-        const div = document.createElement("div");
-        div.className = "form-group question-item";
-
-        div.innerHTML = `
-          <div class="question-input-wrapper">
-            <div class="text-input
-        `;
-        container.appendChild(div);
-    }
-
-    // Función para obtener las preguntas y sus números
-    function obtenerPreguntas() {
-        const questionsInputs = document.querySelectorAll('input[name="questions[]"]');
-        const preguntas = [];
-
-        for (let i = 0; i < questionsInputs.length; i++) {
-            const descripcion = questionsInputs[i].value;
-            preguntas.push({
-                Descripcion: descripcion,
-                NumeroPregunta: i + 1 // Asigna el número de pregunta según el orden
-            });
-        }
-
-        return preguntas;
-    }
-</script> *@
