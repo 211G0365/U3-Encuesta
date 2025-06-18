@@ -67,7 +67,6 @@
 
             if (!res.ok) throw new Error("No se pudo eliminar.");
 
-            alert("Usuario eliminado correctamente.");
             cargarUsuarios();
         } catch (err) {
             console.error("Error eliminando usuario:", err);
