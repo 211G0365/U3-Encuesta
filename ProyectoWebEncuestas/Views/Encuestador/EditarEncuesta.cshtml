@@ -55,7 +55,6 @@
             return;
         }
 
-        if (!confirm("¿Estás seguro de eliminar esta pregunta?")) return;
 
         try {
             const res = await fetch(`https://encuesta-api.websitos256.com/api/encuestas/preguntas/${id}`, {
@@ -69,7 +68,7 @@
                 return;
             }
 
-            alert("Pregunta eliminada.");
+            alert("Pregunta eliminada");
             button.closest(".question-item").remove();
             questionCount--;
         } catch (e) {
@@ -126,7 +125,7 @@
         const id = params.get("id");
 
         if (!id || !token) {
-            alert("Faltan datos para editar.");
+            alert("Rellene los datos");
             return window.location.href = "/Login";
         }
 

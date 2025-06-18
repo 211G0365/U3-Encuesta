@@ -27,7 +27,7 @@
 
     function addQuestion(descripcion = "", numero = questionCount + 1, id = 0) {
         if (questionCount >= maxQuestions) {
-            alert("Solo se permiten hasta 10 preguntas.");
+            alert("Solo se permiten de 1 a 10 preguntas.");
             return;
         }
 
@@ -55,7 +55,6 @@
             return;
         }
 
-        if (!confirm("¿Estás seguro de eliminar esta pregunta?")) return;
 
         try {
             const res = await fetch(`https://encuesta-api.websitos256.com/api/encuestas/preguntas/${id}`, {
@@ -79,9 +78,9 @@
     }
 
     function cancelar() {
-        if (confirm("¿Deseas cancelar la edición?")) {
+ 
             window.history.back();
-        }
+        
     }
 
     document.getElementById("editSurveyForm").addEventListener("submit", async function (e) {
@@ -117,7 +116,6 @@
 
             if (!res.ok) throw new Error(await res.text());
 
-            alert("Encuesta actualizada exitosamente.");
             window.location.href = "/Admin/Encuestas";
         } catch (err) {
             alert("Error al actualizar encuesta: " + err.message);
@@ -129,7 +127,7 @@
         const id = params.get("id");
 
         if (!id || !token) {
-            alert("Faltan datos para editar.");
+            alert("Rellene todos los datos");
             return window.location.href = "/Login";
         }
 
@@ -149,7 +147,7 @@
 
         } catch (err) {
             console.error("Error:", err);
-            alert("Error al cargar la encuesta.");
+            alert("Error al cargar la encuesta");
             window.location.href = "/Admin/Encuestas";
         }
     });
